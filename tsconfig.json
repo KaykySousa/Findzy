@@ -19,7 +19,9 @@
 			"@/components/*": ["components/*"],
 			"@/design/*": ["components/design/*"],
 			"@/services/*": ["services/*"],
-			"@/utils/*": ["utils/*"]
+			"@/utils/*": ["utils/*"],
+			"@/prisma/*": ["prisma/*"],
+			"@/types/*": ["types/*"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
