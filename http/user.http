@@ -1,0 +1,19 @@
+### CREATE A NEW USER
+POST http://localhost:3000/api/register/user
+Content-Type: application/json
+
+{
+	"name": "your name",
+	"email": "your@email.com",
+	"birthdate": "1970-01-01",
+	"password": "your password"
+}
+
+### AUTHENTICATE A USER
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+	"email": "your@email.com",
+	"password": "your password"
+}
