@@ -146,7 +146,10 @@ export default function RegisterUser() {
 				<p className="text-center text-3xl font-bold text-white">
 					Já possui uma conta no Findzy e caiu aqui por engano?
 				</p>
-				<LinkButton href="/login" theme="secondary">
+				<LinkButton
+					href="/login"
+					buttonClassName="border-2 border-white"
+				>
 					Entre agora
 				</LinkButton>
 			</div>
