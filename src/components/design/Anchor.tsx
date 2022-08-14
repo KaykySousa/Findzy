@@ -9,7 +9,7 @@ export default function Anchor({ className, href, ...props }: AnchorProps) {
 	return (
 		<Link href={href}>
 			<a
-				className={`text-slate-500 hover:text-purple-700 hover:underline ${className}`}
+				className={`text-sm text-slate-500 hover:text-purple-700 ${className}`}
 				{...props}
 			/>
 		</Link>
