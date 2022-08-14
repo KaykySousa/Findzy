@@ -18,6 +18,8 @@ export default function RegisterUser() {
 
 	const router = useRouter()
 
+	const [loading, setLoading] = useState(false)
+
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault()
 
@@ -25,6 +27,8 @@ export default function RegisterUser() {
 			if (password !== passwordConfirmation) {
 				throw new CustomError("As senhas não conferem")
 			}
+
+			setLoading(true)
 
 			const { data: registerResponse } =
 				await api.post<RegisterResponseData>("/api/register/user", {
@@ -47,6 +51,8 @@ export default function RegisterUser() {
 			} else if (err instanceof Error) {
 				toast.error(err.message)
 			}
+
+			setLoading(false)
 		}
 	}
 
@@ -129,6 +135,7 @@ export default function RegisterUser() {
 						type="submit"
 						form="user-register-form"
 						className="mb-2"
+						loading={loading}
 					>
 						Encontrar meu item
 					</Button>

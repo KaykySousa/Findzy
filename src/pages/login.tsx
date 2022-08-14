@@ -13,12 +13,14 @@ export default function Login() {
 
 	const router = useRouter()
 
+	const [loading, setLoading] = useState(false)
+
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault()
 
-		console.log("a")
-
 		try {
+			setLoading(true)
+
 			const { data: loginResponse } = await api.post<LoginResponseData>(
 				"/api/login",
 				{
@@ -40,6 +42,8 @@ export default function Login() {
 			} else if (err instanceof Error) {
 				toast.error(err.message)
 			}
+
+			setLoading(false)
 		}
 	}
 
@@ -100,7 +104,12 @@ export default function Login() {
 							Esqueci minha senha
 						</Anchor>
 					</form>
-					<Button type="submit" form="login-form" className="mb-2">
+					<Button
+						type="submit"
+						form="login-form"
+						className="mb-2"
+						loading={loading}
+					>
 						Entrar
 					</Button>
 					<LinkButton
