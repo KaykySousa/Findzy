@@ -1,11 +1,11 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+    provider             = "mysql"
+    url                  = env("DATABASE_URL")
     referentialIntegrity = "prisma"
 }
 
@@ -20,4 +20,35 @@ model User {
     updated_at DateTime @updatedAt
 
     @@map("users")
+}
+
+model Company {
+    id       String @id @default(cuid())
+    name     String
+    cnpj     String @unique
+    cep      String
+    number   String
+    email    String @unique
+    phone    String
+    password String
+    address  String
+
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    Address    Address?
+
+    @@map("companies")
+}
+
+model Address {
+    id         String  @id @default(cuid())
+    logradouro String
+    bairro     String
+    localidade String
+    uf         String
+
+    company    Company @relation(fields: [companyId], references: [id])
+    companyId  String @unique
+
+    @@map("addresses")
 }
