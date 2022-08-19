@@ -5,16 +5,24 @@ import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
 import { toast } from "react-toastify"
 
+interface AddressData {
+	logradouro: string
+	bairro: string
+	localidade: string
+	uf: string
+}
+
 export default function RegisterUser() {
 	const [name, setName] = useState("")
 	const [cnpj, setCnpj] = useState("")
 	const [cep, setCep] = useState("")
+	const [number, setNumber] = useState("")
 	const [email, setEmail] = useState("")
 	const [phone, setPhone] = useState("")
-	const [number, setNumber] = useState("")
-	const [address, setAddress] = useState("")
 	const [password, setPassword] = useState("")
 	const [passwordConfirmation, setPasswordConfirmation] = useState("")
+	
+	const [address, setAddress] = useState<AddressData | null>(null)
 
 	const router = useRouter()
 
@@ -29,12 +37,15 @@ export default function RegisterUser() {
 
 			if (address.erro) throw new CustomError("CPF Inválido")
 
-			setAddress(
-				`${address.logradouro} - ${address.bairro} - ${address.localidade} - ${address.uf}`
-			)
+			setAddress({
+				bairro: address.bairro,
+				localidade: address.localidade,
+				logradouro: address.logradouro,
+				uf: address.uf
+			})
 		} catch (err) {
 			if (err instanceof Error) {
-				setAddress("")
+				setAddress(null)
 				toast.error(err.message)
 			}
 		}
@@ -124,16 +135,18 @@ export default function RegisterUser() {
 								}}
 							/>
 							<Anchor
-								className="mt-2 block"
+								className="mt-2"
 								href="https://buscacepinter.correios.com.br/app/endereco/index.php"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
 								Não sabe o seu CEP?
 							</Anchor>
-							<span className="text-sm text-slate-500">
-								{address}
-							</span>
+							<p className="text-sm text-slate-500">
+								{address && (
+									`${address.logradouro} - ${address.bairro} - ${address.localidade} - ${address.uf}`
+								)}
+							</p>
 						</div>
 						<Input
 							placeholder="Número"
