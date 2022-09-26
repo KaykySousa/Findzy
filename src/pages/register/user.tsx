@@ -1,6 +1,6 @@
 import { Button, Input, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
-import { RegisterResponseData } from "@/types/api"
+import { UserRegisterResponseData } from "@/types/api"
 import CustomError from "@/utils/CustomError"
 import axios from "axios"
 import dayjs from "dayjs"
@@ -31,7 +31,7 @@ export default function RegisterUser() {
 			setLoading(true)
 
 			const { data: registerResponse } =
-				await api.post<RegisterResponseData>("/api/register/user", {
+				await api.post<UserRegisterResponseData>("/api/register/user", {
 					name,
 					birthdate,
 					email,
