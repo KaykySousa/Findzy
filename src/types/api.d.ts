@@ -1,4 +1,4 @@
-export interface UserLoginResponseData {
+export interface LoginResponseData {
 	token: string
 	user: {
 		name: string
