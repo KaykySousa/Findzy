@@ -1,6 +1,10 @@
-import { Button } from "@/design/index"
+import CompanyCard from "@/components/CompanyCard"
 import getUser from "@/utils/getUser"
-import logout from "@/utils/logout"
+import {
+	ChatBubbleBottomCenterTextIcon,
+	Cog8ToothIcon,
+	MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import { GetServerSideProps } from "next"
@@ -17,23 +21,39 @@ interface HomeProps {
 
 export default function Home({ user }: HomeProps) {
 	return (
-		<div className="flex min-h-screen w-full flex-col items-center justify-center">
-			<h1 className="text-4xl font-bold">FINDZY</h1>
-			<p className="mb-32 text-xl">
-				Sua plataforma web de Achados e Perdidos
-			</p>
-			<h1 className="text-4xl font-bold">BEM VINDO, {user.name}</h1>
-			<p className="text-xl">Seu email: {user.email}</p>
-			<p className="text-xl">Sua data de nascimento: {user.birthdate}</p>
-			<p className="text-xl">Sua sessão expirará em: {user.exp}</p>
-			<div className="max-w-xl">
-				<Button
-					onClick={() => {
-						logout()
-					}}
-				>
-					Logout
-				</Button>
+		<div className="min-h-screen w-full bg-white">
+			<header className="flex h-14 w-full items-center gap-x-4 border-b border-gray-100 bg-white px-2 md:h-16 md:justify-between md:px-8">
+				<span className="hidden whitespace-nowrap text-lg text-purple-700 md:block">
+					<strong>Findzy</strong> Perdeu? Achou!
+				</span>
+				<div className="relative flex h-8 w-full items-center md:max-w-3xl">
+					<input
+						type="text"
+						className="h-full w-full cursor-text rounded border-0 bg-gray-100 pl-9 placeholder:text-sm focus:border-purple-700 focus:ring-0"
+						placeholder="Buscar por item ou estabelecimento"
+					/>
+					<MagnifyingGlassIcon className="absolute left-2 h-5 w-5 text-purple-700" />
+				</div>
+				<div className="flex gap-x-4">
+					<ChatBubbleBottomCenterTextIcon className="h-6 w-6 text-purple-700" />
+					<Cog8ToothIcon className="h-6 w-6 text-purple-700" />
+				</div>
+			</header>
+			<div className="flex w-full flex-col items-center gap-y-2 p-2 md:p-0 md:py-4">
+				<CompanyCard
+					company="ETEC da Zona Leste"
+					address="Av. Águia de Haia, 2633 - Cidade A. E. Carvalho"
+					logoUrl="https://yt3.ggpht.com/ytc/AMLnZu-9lToKfZByYACsoOPzQnckD9O7hJVJRrWaZKZQ5Q=s900-c-k-c0x00ffffff-no-rj"
+					itemsNumber={17}
+					rating={5}
+				/>
+				<CompanyCard
+					company="Assaí Atacadista"
+					address="Av. Águia de Haia, 3362 - Cidade A. E. Carvalho"
+					logoUrl="https://gazetaempregosrj.com.br/images/assai-atacadista.jpg"
+					itemsNumber={11}
+					rating={4.9}
+				/>
 			</div>
 		</div>
 	)
