@@ -1,21 +1,43 @@
-import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline"
-import { InputHTMLAttributes, useState } from "react"
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
+import { ChangeEvent, useState } from "react"
+import InputMask, { Props as InputMaskProps } from "react-input-mask"
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<InputMaskProps, "mask"> {
 	togglePassword?: boolean
+	mask?: "cep" | "cnpj"
+}
+
+const masks = {
+	cep: "99999-999",
+	cnpj: "99.999.999/9999-99",
 }
 
 export default function Input({
 	togglePassword,
 	placeholder,
 	type,
+	mask,
+	onChange,
 	...props
 }: InputProps) {
 	const [showPassword, setShowPassword] = useState(false)
 
+	function handleChangeWithoutMask(e: ChangeEvent<HTMLInputElement>) {
+		if (onChange) {
+			onChange({
+				...e,
+				target: {
+					...e.target,
+					value: e.target.value.replace(/\D/g, ""),
+				},
+			})
+		}
+	}
+
 	return (
 		<div className="relative flex h-12 w-full items-center">
-			<input
+			<InputMask
+				mask={mask ? masks[mask] : ""}
 				type={
 					!togglePassword || showPassword
 						? type || "text"
@@ -27,6 +49,7 @@ export default function Input({
 						: ""
 				}`}
 				placeholder={placeholder}
+				onChange={mask ? handleChangeWithoutMask : onChange}
 				{...props}
 			/>
 			<label
@@ -47,7 +70,7 @@ export default function Input({
 					{showPassword ? (
 						<EyeIcon className="h-5 w-5" />
 					) : (
-						<EyeOffIcon className="h-5 w-5" />
+						<EyeSlashIcon className="h-5 w-5" />
 					)}
 				</button>
 			)}
