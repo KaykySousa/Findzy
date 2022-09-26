@@ -141,7 +141,10 @@ export default function RegisterUser() {
 										setCep(e.target.value)
 									}}
 									onBlur={(e) => {
-										if (e.target.value.length === 8) {
+										if (
+											e.target.value.replace(/\D/g, "")
+												.length === 8
+										) {
 											getAddressByCep()
 										}
 									}}
