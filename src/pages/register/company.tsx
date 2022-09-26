@@ -1,7 +1,10 @@
 import { Anchor, Button, Input, LinkButton } from "@/design/index"
+import { api } from "@/services/axios"
+import { CompanyRegisterResponseData } from "@/types/api"
 import CustomError from "@/utils/CustomError"
 import axios from "axios"
 import { useRouter } from "next/router"
+import { setCookie } from "nookies"
 import { FormEvent, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -21,7 +24,7 @@ export default function RegisterUser() {
 	const [phone, setPhone] = useState("")
 	const [password, setPassword] = useState("")
 	const [passwordConfirmation, setPasswordConfirmation] = useState("")
-	
+
 	const [address, setAddress] = useState<AddressData | null>(null)
 
 	const router = useRouter()
@@ -41,7 +44,7 @@ export default function RegisterUser() {
 				bairro: address.bairro,
 				localidade: address.localidade,
 				logradouro: address.logradouro,
-				uf: address.uf
+				uf: address.uf,
 			})
 		} catch (err) {
 			if (err instanceof Error) {
@@ -55,21 +58,27 @@ export default function RegisterUser() {
 		e.preventDefault()
 
 		try {
-			// if (password !== passwordConfirmation) {
-			// 	throw new CustomError("As senhas não conferem")
-			// }
-			// setLoading(true)
-			// const { data: registerResponse } =
-			// 	await api.post<RegisterResponseData>("/api/register/user", {
-			// 		name,
-			// 		email,
-			// 		password,
-			// 	})
-			// setCookie(null, "findzy.token", registerResponse.token, {
-			// 	path: "/",
-			// 	maxAge: 60 * 60, // 1 hour
-			// })
-			// router.push("/")
+			if (password !== passwordConfirmation) {
+				throw new CustomError("As senhas não conferem")
+			}
+			setLoading(true)
+
+			const { data: registerResponse } =
+				await api.post<CompanyRegisterResponseData>(
+					"/api/register/company",
+					{
+						name,
+						email,
+						password,
+					}
+				)
+
+			setCookie(null, "findzy.token", registerResponse.token, {
+				path: "/",
+				maxAge: 60 * 60, // 1 hour
+			})
+
+			router.push("/")
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const error = (err.response?.data as any).error
@@ -114,48 +123,51 @@ export default function RegisterUser() {
 						/>
 						<Input
 							placeholder="CNPJ"
+							mask="cnpj"
 							required
 							value={cnpj}
 							onChange={(e) => {
 								setCnpj(e.target.value)
 							}}
 						/>
-						<div>
+						<div className="flex w-full flex-col gap-y-6 md:flex-row md:gap-x-6">
+							<div className="w-full">
+								<Input
+									placeholder="CEP"
+									mask="cep"
+									required
+									value={cep}
+									onChange={(e) => {
+										setCep(e.target.value)
+									}}
+									onBlur={(e) => {
+										if (e.target.value.length === 8) {
+											getAddressByCep()
+										}
+									}}
+								/>
+								<Anchor
+									className="mt-2"
+									href="https://buscacepinter.correios.com.br/app/endereco/index.php"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Não sabe o seu CEP?
+								</Anchor>
+								<p className="text-sm text-slate-500">
+									{address &&
+										`${address.logradouro} - ${address.bairro} - ${address.localidade} - ${address.uf}`}
+								</p>
+							</div>
 							<Input
-								placeholder="CEP"
+								placeholder="Número"
 								required
-								value={cep}
+								value={number}
 								onChange={(e) => {
-									setCep(e.target.value)
-								}}
-								onBlur={(e) => {
-									if (e.target.value.length === 8) {
-										getAddressByCep()
-									}
+									setNumber(e.target.value)
 								}}
 							/>
-							<Anchor
-								className="mt-2"
-								href="https://buscacepinter.correios.com.br/app/endereco/index.php"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Não sabe o seu CEP?
-							</Anchor>
-							<p className="text-sm text-slate-500">
-								{address && (
-									`${address.logradouro} - ${address.bairro} - ${address.localidade} - ${address.uf}`
-								)}
-							</p>
 						</div>
-						<Input
-							placeholder="Número"
-							required
-							value={number}
-							onChange={(e) => {
-								setNumber(e.target.value)
-							}}
-						/>
 						<Input
 							type="email"
 							placeholder="Email"
