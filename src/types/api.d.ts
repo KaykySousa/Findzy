@@ -1,4 +1,4 @@
-export interface LoginResponseData {
+export interface UserLoginResponseData {
 	token: string
 	user: {
 		name: string
@@ -7,7 +7,16 @@ export interface LoginResponseData {
 	}
 }
 
-export interface RegisterResponseData {
+export interface UserRegisterResponseData {
+	token: string
+	user: {
+		name: string
+		email: string
+		birthdate: string
+	}
+}
+
+export interface CompanyRegisterResponseData {
 	token: string
 	user: {
 		name: string
