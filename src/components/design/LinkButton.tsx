@@ -5,7 +5,7 @@ import { ButtonHTMLAttributes } from "react"
 interface LinkButtonProps
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof LinkProps>,
 		LinkProps {
-	theme?: "primary" | "secondary"
+	theme?: "primary" | "secondary" | "tertiary"
 	buttonClassName?: string
 }
 
