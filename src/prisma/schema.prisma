@@ -23,32 +23,44 @@ model User {
 }
 
 model Company {
-    id       String @id @default(cuid())
-    name     String
-    cnpj     String @unique
-    cep      String
-    number   String
-    email    String @unique
-    phone    String
-    password String
-    address  String
+    id                  String @id @default(cuid())
+    name                String
+    cnpj                String @unique
+    number              String
+    email               String @unique
+    phone               String
+    password            String
+    profile_picture_url String
 
-    created_at DateTime  @default(now())
-    updated_at DateTime  @updatedAt
-    Address    Address?
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    address    Address?
 
     @@map("companies")
 }
 
-model Address {
-    id         String  @id @default(cuid())
-    logradouro String
-    bairro     String
-    localidade String
-    uf         String
+model Admin {
+    id       String @id @default(cuid())
+    name     String
+    email    String @unique
+    password String
 
-    company    Company @relation(fields: [companyId], references: [id])
-    companyId  String @unique
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("admins")
+}
+
+model Address {
+    id       String @id @default(cuid())
+    street   String
+    district String
+    city     String
+    uf       String
+    cep      String
+
+    company    Company @relation(fields: [company_id], references: [id])
+    company_id String  @unique
 
     @@map("addresses")
 }
