@@ -22,28 +22,66 @@ const handler: NextApiHandler = async (req, res) => {
 			where: { email },
 		})
 
-		if (!user)
-			throw new CustomError("User or password incorrect", {
-				statusCode: 403,
+		if (user) {
+			const passwordMatch = await compare(password, user.password)
+
+			if (!passwordMatch)
+				throw new CustomError("User or password incorrect", {
+					statusCode: 403,
+				})
+
+			const token = tokenProvider(user.id)
+
+			return res.status(200).json({
+				token,
+				accountType: "user",
 			})
+		}
 
-		const passwordMatch = await compare(password, user.password)
-
-		if (!passwordMatch)
-			throw new CustomError("User or password incorrect", {
-				statusCode: 403,
-			})
-
-		const token = tokenProvider(user.id)
-
-		return res.status(200).json({
-			token,
-			user: {
-				name: user.name,
-				email: user.email,
-				birthdate: user.birthdate,
-			},
+		const company = await prisma.company.findUnique({
+			where: { email },
 		})
+
+		if (company) {
+			const passwordMatch = await compare(password, company.password)
+
+			if (!passwordMatch)
+				throw new CustomError("User or password incorrect", {
+					statusCode: 403,
+				})
+
+			const token = tokenProvider(company.id)
+
+			return res.status(200).json({
+				token,
+				accountType: "company",
+			})
+		}
+
+		const admin = await prisma.admin.findUnique({
+			where: { email },
+		})
+
+		if (admin) {
+			const passwordMatch = await compare(password, admin.password)
+
+			if (!passwordMatch)
+				throw new CustomError("User or password incorrect", {
+					statusCode: 403,
+				})
+
+			const token = tokenProvider(admin.id)
+
+			return res.status(200).json({
+				token,
+				accountType: "admin",
+			})
+		}
+
+		if (!user || !company || !admin)
+			throw new CustomError("User or password incorrect", {
+				statusCode: 403,
+			})
 	} catch (e) {
 		const { error, statusCode } = handleError(e)
 		return res.status(statusCode).json({ error })
