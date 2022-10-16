@@ -1,25 +1,12 @@
-import { decode, verify } from "jsonwebtoken"
-
 import prisma from "@/prisma/client"
 import CustomError from "@/utils/CustomError"
+import validateToken from "./validateToken"
 
 export default async function getUser(token: string) {
 	try {
-		if (!token) throw new CustomError("No token provided")
+		const decodedToken = validateToken(token)
 
-		try {
-			verify(token, String(process.env.JWT_SECRET_KEY))
-		} catch (e) {
-			throw new CustomError("Token invalid")
-		}
-
-		const decodedToken = decode(token, {
-			json: true,
-		})
-
-		if (decodedToken?.iss !== "Findzy" || !decodedToken?.sub) {
-			throw new CustomError("Token invalid")
-		}
+		if (!decodedToken) throw new CustomError("Token invalid")
 
 		const user = await prisma.user.findUnique({
 			where: { id: decodedToken.sub },
@@ -32,10 +19,7 @@ export default async function getUser(token: string) {
 
 		if (!user) throw new CustomError("User not found")
 
-		return {
-			...user,
-			exp: decodedToken.exp,
-		}
+		return user
 	} catch (error) {
 		return undefined
 	}
