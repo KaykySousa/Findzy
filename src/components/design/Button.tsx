@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes } from "react"
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	theme?: "primary" | "secondary"
+	theme?: "primary" | "secondary" | "tertiary"
 	loading?: boolean
 }
 
@@ -17,6 +17,8 @@ export default function Button({
 			"h-12 w-full rounded-md bg-purple-700 text-lg font-bold text-white disabled:bg-purple-500",
 		secondary:
 			"h-12 w-full rounded-md bg-white font-bold text-purple-700 disabled:bg-gray-200",
+		tertiary:
+			"h-12 w-full flex justify-center items-center rounded-md bg-purple-200 font-bold text-purple-700 hover:bg-purple-300",
 	}
 
 	return (
