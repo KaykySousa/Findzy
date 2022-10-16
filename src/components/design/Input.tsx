@@ -4,12 +4,13 @@ import InputMask, { Props as InputMaskProps } from "react-input-mask"
 
 interface InputProps extends Omit<InputMaskProps, "mask"> {
 	togglePassword?: boolean
-	mask?: "cep" | "cnpj"
+	mask?: "cep" | "cnpj" | "phone"
 }
 
 const masks = {
 	cep: "99999-999",
 	cnpj: "99.999.999/9999-99",
+	phone: "(99) 99999-9999",
 }
 
 export default function Input({
