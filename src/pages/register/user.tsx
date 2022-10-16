@@ -1,3 +1,4 @@
+import { Logo } from "@/components/index"
 import { Button, Input, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { UserRegisterResponseData } from "@/types/api"
@@ -59,9 +60,7 @@ export default function RegisterUser() {
 	return (
 		<div className="flex min-h-screen w-full">
 			<div className="flex flex-1 flex-col items-center p-5 md:justify-center lg:p-10">
-				<span className="mb-4 hidden self-start text-xl text-purple-700 lg:block">
-					<strong>Findzy</strong> Perdeu? Achou!
-				</span>
+				<Logo className="mb-4 hidden self-start !text-xl lg:block" />
 				<div className="flex w-full max-w-xl flex-1 flex-col items-center md:justify-center">
 					<span className="mb-4 text-lg font-bold text-purple-700 md:text-3xl lg:hidden">
 						Findzy
