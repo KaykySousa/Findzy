@@ -1,3 +1,5 @@
+import ImageUpload from "@/components/ImageUpload"
+import { Logo } from "@/components/index"
 import { Anchor, Button, Input, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { CompanyRegisterResponseData } from "@/types/api"
@@ -9,9 +11,9 @@ import { FormEvent, useState } from "react"
 import { toast } from "react-toastify"
 
 interface AddressData {
-	logradouro: string
-	bairro: string
-	localidade: string
+	street: string
+	district: string
+	city: string
 	uf: string
 }
 
@@ -24,12 +26,13 @@ export default function RegisterUser() {
 	const [phone, setPhone] = useState("")
 	const [password, setPassword] = useState("")
 	const [passwordConfirmation, setPasswordConfirmation] = useState("")
-
+	const [profilePicture, setProfilePicture] = useState<string | undefined>()
 	const [address, setAddress] = useState<AddressData | null>(null)
 
-	const router = useRouter()
-
+	const [showImageUpload, setShowImageUpload] = useState(false)
 	const [loading, setLoading] = useState(false)
+
+	const router = useRouter()
 
 	async function getAddressByCep() {
 		try {
@@ -41,9 +44,9 @@ export default function RegisterUser() {
 			if (address.erro) throw new CustomError("CPF Inválido")
 
 			setAddress({
-				bairro: address.bairro,
-				localidade: address.localidade,
-				logradouro: address.logradouro,
+				district: address.bairro,
+				city: address.localidade,
+				street: address.logradouro,
 				uf: address.uf,
 			})
 		} catch (err) {
@@ -61,15 +64,20 @@ export default function RegisterUser() {
 			if (password !== passwordConfirmation) {
 				throw new CustomError("As senhas não conferem")
 			}
-			setLoading(true)
 
 			const { data: registerResponse } =
 				await api.post<CompanyRegisterResponseData>(
 					"/api/register/company",
 					{
 						name,
+						cnpj,
+						cep,
+						number,
 						email,
+						phone,
 						password,
+						address,
+						profilePicture,
 					}
 				)
 
@@ -78,7 +86,7 @@ export default function RegisterUser() {
 				maxAge: 60 * 60, // 1 hour
 			})
 
-			router.push("/")
+			router.push("/company")
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const error = (err.response?.data as any).error
@@ -86,17 +94,13 @@ export default function RegisterUser() {
 			} else if (err instanceof Error) {
 				toast.error(err.message)
 			}
-
-			setLoading(false)
 		}
 	}
 
 	return (
 		<div className="flex min-h-screen w-full">
 			<div className="flex flex-1 flex-col items-center p-5 md:justify-center lg:p-10">
-				<span className="mb-4 hidden self-start text-xl text-purple-700 lg:block">
-					<strong>Findzy</strong> Perdeu? Achou!
-				</span>
+				<Logo className="mb-4 hidden self-start !text-xl lg:block" />
 				<div className="flex w-full max-w-xl flex-1 flex-col items-center md:justify-center">
 					<span className="mb-4 text-lg font-bold text-purple-700 md:text-3xl lg:hidden">
 						Findzy
@@ -111,7 +115,10 @@ export default function RegisterUser() {
 					<form
 						id="user-register-form"
 						className="mb-12 flex w-full flex-col gap-y-6"
-						onSubmit={handleSubmit}
+						onSubmit={(e) => {
+							e.preventDefault()
+							setShowImageUpload(true)
+						}}
 					>
 						<Input
 							placeholder="Nome da Empresa"
@@ -159,7 +166,7 @@ export default function RegisterUser() {
 								</Anchor>
 								<p className="text-sm text-slate-500">
 									{address &&
-										`${address.logradouro} - ${address.bairro} - ${address.localidade} - ${address.uf}`}
+										`${address.street} - ${address.district} - ${address.city} - ${address.uf}`}
 								</p>
 							</div>
 							<Input
@@ -181,7 +188,8 @@ export default function RegisterUser() {
 							}}
 						/>
 						<Input
-							type="email"
+							type={"tel"}
+							mask="phone"
 							placeholder="Telefone"
 							required
 							value={phone}
@@ -218,7 +226,7 @@ export default function RegisterUser() {
 						className="mb-2"
 						loading={loading}
 					>
-						Iniciar Solicitação
+						Cadastrar
 					</Button>
 					<LinkButton
 						href="/login"
@@ -241,6 +249,13 @@ export default function RegisterUser() {
 					Entre agora
 				</LinkButton>
 			</div>
+
+			{showImageUpload && (
+				<ImageUpload
+					fileState={setProfilePicture}
+					onSubmit={handleSubmit}
+				/>
+			)}
 		</div>
 	)
 }
