@@ -1,9 +1,9 @@
 export interface LoginResponseData {
 	token: string
-	user: {
+	accountType: string
+	data: {
 		name: string
 		email: string
-		birthdate: string
 	}
 }
 
