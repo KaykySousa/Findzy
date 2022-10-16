@@ -1,3 +1,4 @@
+import { Logo } from "@/components/index"
 import { Anchor, Button, Input, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { LoginResponseData } from "@/types/api"
@@ -34,7 +35,13 @@ export default function Login() {
 				maxAge: 60 * 60, // 1 hour
 			})
 
-			router.push("/")
+			if (loginResponse.accountType === "user") {
+				router.push("/user")
+			} else if (loginResponse.accountType === "company") {
+				router.push("/company")
+			} else if (loginResponse.accountType === "admin") {
+				router.push("/admin")
+			}
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const error = (err.response?.data as any).error
@@ -50,9 +57,7 @@ export default function Login() {
 	return (
 		<div className="flex min-h-screen w-full">
 			<div className="hidden w-2/5 flex-col bg-purple-700 p-10 lg:flex">
-				<span className="mb-4 hidden text-xl text-white lg:block">
-					<strong>Findzy</strong> Perdeu? Achou!
-				</span>
+				<Logo className="hiden mb-4 !text-xl !text-white lg:block" />
 				<div className="flex flex-1 flex-col items-center justify-center gap-y-8">
 					<p className="text-center text-3xl font-bold text-white">
 						Primeira vez?
