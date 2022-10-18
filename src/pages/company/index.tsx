@@ -11,11 +11,18 @@ export default function MainCompany() {
 			<Header />
 			<div className="w-full max-w-4xl flex-1 py-4">
 				<CompanyBanner />
-				<div className="w-full p-2">
-					<LinkButton href="/company/new-item" theme="tertiary">
-						<PlusIcon className="mr-1 h-6 w-6" />
+				<div className="flex w-full grid-cols-3 flex-col gap-y-4 p-2 md:grid md:gap-x-4 md:py-4">
+					<LinkButton
+						href="/company/new-item"
+						buttonClassName="md:!h-full md:flex-col"
+						theme="tertiary"
+					>
+						<PlusIcon className="mr-1 h-6 w-6 md:mb-4 md:h-10 md:w-10" />
 						<span>NOVO ITEM</span>
 					</LinkButton>
+					<ItemCard />
+					<ItemCard />
+					<ItemCard />
 					<ItemCard />
 				</div>
 			</div>
