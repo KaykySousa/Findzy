@@ -1,5 +1,5 @@
 import { Logo } from "@/components/index"
-import { Anchor, Button, Input, LinkButton } from "@/design/index"
+import { Anchor, Button, FloatingInput, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { LoginResponseData } from "@/types/api"
 import axios from "axios"
@@ -87,7 +87,7 @@ export default function Login() {
 						className="mb-12 flex w-full flex-col gap-y-6"
 						onSubmit={handleSubmit}
 					>
-						<Input
+						<FloatingInput
 							type="email"
 							placeholder="Email"
 							required
@@ -96,7 +96,7 @@ export default function Login() {
 								setEmail(e.target.value)
 							}}
 						/>
-						<Input
+						<FloatingInput
 							placeholder="Senha"
 							togglePassword
 							required

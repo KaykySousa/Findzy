@@ -2,7 +2,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
 import { ChangeEvent, useState } from "react"
 import InputMask, { Props as InputMaskProps } from "react-input-mask"
 
-interface InputProps extends Omit<InputMaskProps, "mask"> {
+interface FloatingInputProps extends Omit<InputMaskProps, "mask"> {
 	togglePassword?: boolean
 	mask?: "cep" | "cnpj" | "phone"
 }
@@ -13,14 +13,14 @@ const masks = {
 	phone: "(99) 99999-9999",
 }
 
-export default function Input({
+export default function FloatingInput({
 	togglePassword,
 	placeholder,
 	type,
 	mask,
 	onChange,
 	...props
-}: InputProps) {
+}: FloatingInputProps) {
 	const [showPassword, setShowPassword] = useState(false)
 
 	function handleChangeWithoutMask(e: ChangeEvent<HTMLInputElement>) {

@@ -1,6 +1,6 @@
 import ImageUpload from "@/components/ImageUpload"
 import { Logo } from "@/components/index"
-import { Anchor, Button, Input, LinkButton } from "@/design/index"
+import { Anchor, Button, FloatingInput, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { CompanyRegisterResponseData } from "@/types/api"
 import CustomError from "@/utils/CustomError"
@@ -120,7 +120,7 @@ export default function RegisterUser() {
 							setShowImageUpload(true)
 						}}
 					>
-						<Input
+						<FloatingInput
 							placeholder="Nome da Empresa"
 							required
 							value={name}
@@ -128,7 +128,7 @@ export default function RegisterUser() {
 								setName(e.target.value)
 							}}
 						/>
-						<Input
+						<FloatingInput
 							placeholder="CNPJ"
 							mask="cnpj"
 							required
@@ -139,7 +139,7 @@ export default function RegisterUser() {
 						/>
 						<div className="flex w-full flex-col gap-y-6 md:flex-row md:gap-x-6">
 							<div className="w-full">
-								<Input
+								<FloatingInput
 									placeholder="CEP"
 									mask="cep"
 									required
@@ -169,7 +169,7 @@ export default function RegisterUser() {
 										`${address.street} - ${address.district} - ${address.city} - ${address.uf}`}
 								</p>
 							</div>
-							<Input
+							<FloatingInput
 								placeholder="Número"
 								required
 								value={number}
@@ -178,7 +178,7 @@ export default function RegisterUser() {
 								}}
 							/>
 						</div>
-						<Input
+						<FloatingInput
 							type="email"
 							placeholder="Email"
 							required
@@ -187,7 +187,7 @@ export default function RegisterUser() {
 								setEmail(e.target.value)
 							}}
 						/>
-						<Input
+						<FloatingInput
 							type={"tel"}
 							mask="phone"
 							placeholder="Telefone"
@@ -198,7 +198,7 @@ export default function RegisterUser() {
 							}}
 						/>
 						<div className="flex w-full flex-col gap-y-6 md:flex-row md:gap-x-6">
-							<Input
+							<FloatingInput
 								placeholder="Senha"
 								minLength={8}
 								togglePassword
@@ -208,7 +208,7 @@ export default function RegisterUser() {
 									setPassword(e.target.value)
 								}}
 							/>
-							<Input
+							<FloatingInput
 								placeholder="Repita a senha"
 								minLength={8}
 								togglePassword

@@ -1,6 +1,6 @@
 import Anchor from "./Anchor"
 import Button from "./Button"
-import Input from "./Input"
+import FloatingInput from "./FloatingInput"
 import LinkButton from "./LinkButton"
 
-export { Anchor, Button, Input, LinkButton }
+export { Anchor, Button, FloatingInput, LinkButton }
