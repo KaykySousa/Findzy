@@ -1,23 +1,14 @@
 import fileToBase64 from "@/utils/fileToBase64"
 import { UserCircleIcon } from "@heroicons/react/24/outline"
-import {
-	ChangeEvent,
-	Dispatch,
-	DragEvent,
-	FormEvent,
-	SetStateAction,
-	useEffect,
-	useState,
-} from "react"
+import { ChangeEvent, DragEvent, useEffect, useState } from "react"
 import Button from "./design/Button"
 import Modal from "./design/Modal"
 
 interface ImageUploadProps {
-	fileState: Dispatch<SetStateAction<string | undefined>>
-	onSubmit: (e: FormEvent) => Promise<void>
+	onUploadButton: (image: string) => any
 }
 
-export default function ImageUpload({ fileState, onSubmit }: ImageUploadProps) {
+export default function ImageUpload({ onUploadButton }: ImageUploadProps) {
 	const [preview, setPreview] = useState<string | undefined>()
 	const [inputFile, setInputFile] = useState("")
 	const [file, setFile] = useState<File | undefined>()
@@ -25,7 +16,6 @@ export default function ImageUpload({ fileState, onSubmit }: ImageUploadProps) {
 	useEffect(() => {
 		if (!file) return
 		fileToBase64(file).then((fileBase64) => {
-			fileState(fileBase64)
 			setPreview(fileBase64)
 		})
 	}, [file])
@@ -88,7 +78,16 @@ export default function ImageUpload({ fileState, onSubmit }: ImageUploadProps) {
 					</>
 				)}
 			</div>
-			<Button onClick={onSubmit}>Iniciar Solicitação</Button>
+			<Button
+				onClick={() => {
+					if (!file) return
+					fileToBase64(file).then((fileBase64) => {
+						onUploadButton(fileBase64!)
+					})
+				}}
+			>
+				Iniciar Solicitação
+			</Button>
 		</Modal>
 	)
 }
