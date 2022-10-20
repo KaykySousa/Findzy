@@ -64,3 +64,24 @@ model Address {
 
     @@map("addresses")
 }
+
+model Item {
+    id          String      @id @default(cuid())
+    name        String
+    color       String
+    local       String
+    description String
+    image       ItemImage[]
+
+    @@map("items")
+}
+
+model ItemImage {
+    id        String @id @default(cuid())
+    image_url String
+
+    item_id String
+    item    Item   @relation(fields: [item_id], references: [id])
+
+    @@map("item_image")
+}
