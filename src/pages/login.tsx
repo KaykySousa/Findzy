@@ -118,7 +118,7 @@ export default function Login() {
 						Entrar
 					</Button>
 					<LinkButton
-						href="/login"
+						href="/register"
 						className="lg:hidden"
 						theme="secondary"
 					>
