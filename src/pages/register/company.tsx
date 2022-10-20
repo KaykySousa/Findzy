@@ -7,7 +7,7 @@ import CustomError from "@/utils/CustomError"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { setCookie } from "nookies"
-import { FormEvent, useState } from "react"
+import { useState } from "react"
 import { toast } from "react-toastify"
 
 interface AddressData {
@@ -26,7 +26,6 @@ export default function RegisterUser() {
 	const [phone, setPhone] = useState("")
 	const [password, setPassword] = useState("")
 	const [passwordConfirmation, setPasswordConfirmation] = useState("")
-	const [profilePicture, setProfilePicture] = useState<string | undefined>()
 	const [address, setAddress] = useState<AddressData | null>(null)
 
 	const [showImageUpload, setShowImageUpload] = useState(false)
@@ -57,9 +56,7 @@ export default function RegisterUser() {
 		}
 	}
 
-	async function handleSubmit(e: FormEvent) {
-		e.preventDefault()
-
+	async function handleSubmit(profilePicture: string) {
 		try {
 			if (password !== passwordConfirmation) {
 				throw new CustomError("As senhas não conferem")
@@ -250,12 +247,7 @@ export default function RegisterUser() {
 				</LinkButton>
 			</div>
 
-			{showImageUpload && (
-				<ImageUpload
-					fileState={setProfilePicture}
-					onSubmit={handleSubmit}
-				/>
-			)}
+			{showImageUpload && <ImageUpload onUploadButton={handleSubmit} />}
 		</div>
 	)
 }
