@@ -28,7 +28,6 @@ export default function NewItem() {
 
 	async function handleSubmit() {
 		try {
-			console.log("okokok")
 			const item = await api.post("/api/new-item", {
 				name,
 				category,
@@ -65,7 +64,6 @@ export default function NewItem() {
 					onSubmit={(e) => {
 						e.preventDefault()
 						if (formStep + 1 === 2) {
-							console.log("ahhhhhh")
 							handleSubmit()
 						} else {
 							setFormStep(formStep + 1)
