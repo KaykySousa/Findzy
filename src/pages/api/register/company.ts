@@ -44,7 +44,8 @@ const handler: NextApiHandler = async (req, res) => {
 		if (password.length < 8) throw new CustomError("Senha fraca")
 
 		const { secure_url: profilePictureUrl } = await imageUploader(
-			profilePicture
+			profilePicture,
+			"findzy-company-profile-pictures"
 		)
 
 		const passwordHash = await hash(password, 10)

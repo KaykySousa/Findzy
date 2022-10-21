@@ -1,10 +1,20 @@
 import { cloudinary } from "@/services/cloudinary"
+import { UploadApiResponse } from "cloudinary"
 
-export default async function imageUploader(imageBase64: string) {
+type PresetType = "findzy-company-profile-pictures" | "findzy-items"
+
+type ImageUploader = (
+	imageBase64: string,
+	preset: PresetType
+) => Promise<UploadApiResponse>
+
+const imageUploader: ImageUploader = async (imageBase64, preset) => {
 	const uploadResponse = await cloudinary.uploader.upload(imageBase64, {
-		upload_preset: "findzy-company-profile-pictures",
+		upload_preset: preset,
 		transformation: [{ quality: "auto" }],
 	})
 
 	return uploadResponse
 }
+
+export default imageUploader
