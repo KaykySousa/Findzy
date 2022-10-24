@@ -1,18 +1,23 @@
 import { Button, Input, Select } from "@/components/design"
-import { ImageUpload } from "@/components/index"
+import { Header, ImageUpload, ItemCard } from "@/components/index"
 import { api } from "@/services/axios"
 import {
 	ArrowLeftIcon,
 	ArrowRightIcon,
+	CheckIcon,
 	DevicePhoneMobileIcon,
 	DocumentDuplicateIcon,
 	IdentificationIcon,
+	PencilSquareIcon,
 	PlusIcon,
 	SunIcon,
-	XMarkIcon,
+	XMarkIcon
 } from "@heroicons/react/24/outline"
+import axios from "axios"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useState } from "react"
+import { toast } from "react-toastify"
 
 export default function NewItem() {
 	const [name, setName] = useState("")
@@ -26,7 +31,9 @@ export default function NewItem() {
 
 	const [showImageUpload, setShowImageUpload] = useState(false)
 
-	async function handleSubmit() {
+	const router = useRouter()
+
+	async function handlePublish() {
 		try {
 			const item = await api.post("/api/new-item", {
 				name,
@@ -37,15 +44,21 @@ export default function NewItem() {
 				images,
 			})
 
-			console.log(item)
-		} catch (error) {
-			console.error(error)
+			router.push("/company")
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				const error = (err.response?.data as any).error
+				toast.error(error)
+			} else if (err instanceof Error) {
+				toast.error(err.message)
+			}
 		}
 	}
 
 	return (
-		<div className="flex min-h-screen w-full justify-center">
-			<div className="flex w-full max-w-3xl flex-1 flex-col p-5">
+		<div className="flex min-h-screen w-full flex-col items-center">
+			<Header showInput={false} className="hidden md:flex" />
+			<div className="flex w-full max-w-2xl flex-1 flex-col rounded-md border-gray-100 p-5 md:my-5 md:border md:py-4">
 				<div className="relative flex w-full items-center justify-center">
 					<h1 className="text-lg font-bold text-purple-700">
 						NOVO ITEM
@@ -63,11 +76,7 @@ export default function NewItem() {
 					id="newItemForm"
 					onSubmit={(e) => {
 						e.preventDefault()
-						if (formStep + 1 === 2) {
-							handleSubmit()
-						} else {
-							setFormStep(formStep + 1)
-						}
+						setFormStep(formStep + 1)
 					}}
 				>
 					{formStep === 0 && (
@@ -211,28 +220,69 @@ export default function NewItem() {
 							</Button>
 						</div>
 					)}
+
+					{formStep === 2 && (
+						<div className="flex flex-1 flex-col items-center gap-y-6">
+							<p className="text-center font-bold text-gray-800">
+								Prontinho, dá uma olhada em como vai ficar:
+							</p>
+							<div className="flex w-full flex-1 flex-col items-center justify-between md:w-80">
+								<ItemCard
+									className="md:w-72"
+									color={color}
+									description={description}
+									images={images}
+									local={local}
+									title={name}
+									defaultShowDescription={true}
+								/>
+								<div className="mt-4 flex w-full justify-between">
+									<button
+										type="button"
+										className="flex items-center justify-center py-2 font-bold text-gray-800"
+										onClick={() => {
+											setFormStep(0)
+										}}
+									>
+										Alterar
+										<PencilSquareIcon className="ml-1 h-6 w-6" />
+									</button>
+									<button
+										type="button"
+										className="flex items-center justify-center py-2 font-bold text-green-600"
+										onClick={handlePublish}
+									>
+										Publicar
+										<CheckIcon className="ml-1 h-6 w-6" />
+									</button>
+								</div>
+							</div>
+						</div>
+					)}
 				</form>
 
-				<div className="flex flex-row-reverse justify-between">
-					<button
-						className="flex items-center justify-center py-2 font-bold text-gray-800"
-						form="newItemForm"
-					>
-						Continuar
-						<ArrowRightIcon className="ml-1 h-6 w-6 text-purple-700" />
-					</button>
-					{formStep > 0 && (
+				{formStep <= 1 && (
+					<div className="mt-5 flex flex-row-reverse justify-between">
 						<button
-							className="flex items-center justify-center py-2 font-bold text-gray-800"
-							onClick={() => {
-								setFormStep(formStep - 1)
-							}}
+							className="group flex items-center justify-center py-2 font-bold text-gray-800"
+							form="newItemForm"
 						>
-							<ArrowLeftIcon className="mr-1 h-6 w-6 text-purple-700" />
-							Voltar
+							Continuar
+							<ArrowRightIcon className="ml-1 h-6 w-6 text-purple-700 transition-transform group-hover:translate-x-1" />
 						</button>
-					)}
-				</div>
+						{formStep > 0 && (
+							<button
+								className="group flex items-center justify-center py-2 font-bold text-gray-800"
+								onClick={() => {
+									setFormStep(formStep - 1)
+								}}
+							>
+								<ArrowLeftIcon className="mr-1 h-6 w-6 text-purple-700 transition-transform group-hover:-translate-x-1" />
+								Voltar
+							</button>
+						)}
+					</div>
+				)}
 			</div>
 
 			{showImageUpload && (
