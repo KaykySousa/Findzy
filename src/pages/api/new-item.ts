@@ -47,15 +47,13 @@ const handler: NextApiHandler = async (req, res) => {
 			})
 		})
 
-		console.log(imagesUrl)
-
 		const item = await prisma.item.create({
 			data: {
 				color,
 				description,
 				local,
 				name,
-				image: {
+				images: {
 					createMany: {
 						data: imagesUrl,
 					},

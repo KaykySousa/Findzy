@@ -71,7 +71,7 @@ model Item {
     color       String
     local       String
     description String
-    image       ItemImage[]
+    images      ItemImage[]
 
     @@map("items")
 }
@@ -83,5 +83,5 @@ model ItemImage {
     item_id String
     item    Item   @relation(fields: [item_id], references: [id])
 
-    @@map("item_image")
+    @@map("item_images")
 }
