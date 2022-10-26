@@ -1,6 +1,7 @@
 import { Button, Input, Select } from "@/components/design"
 import { Header, ImageUpload, ItemCard } from "@/components/index"
 import { api } from "@/services/axios"
+import withCompanyAuth from "@/utils/withCompanyAuth"
 import {
 	ArrowLeftIcon,
 	ArrowRightIcon,
@@ -11,7 +12,7 @@ import {
 	PencilSquareIcon,
 	PlusIcon,
 	SunIcon,
-	XMarkIcon
+	XMarkIcon,
 } from "@heroicons/react/24/outline"
 import axios from "axios"
 import Link from "next/link"
@@ -296,3 +297,9 @@ export default function NewItem() {
 		</div>
 	)
 }
+
+export const getServerSideProps = withCompanyAuth(async () => {
+	return {
+		props: {},
+	}
+})

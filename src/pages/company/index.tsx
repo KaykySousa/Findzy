@@ -1,10 +1,8 @@
 import { LinkButton } from "@/components/design"
 import { CompanyBanner, Header, ItemCard } from "@/components/index"
-import getCompany from "@/utils/getCompany"
 import getItems from "@/utils/getItems"
+import withCompanyAuth from "@/utils/withCompanyAuth"
 import { PlusIcon } from "@heroicons/react/24/outline"
-import { GetServerSideProps } from "next"
-import { parseCookies } from "nookies"
 
 interface MainCompanyProps {
 	items:
@@ -50,29 +48,15 @@ export default function MainCompany({ items }: MainCompanyProps) {
 	)
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-	const { "findzy.token": token } = parseCookies(ctx)
-
-	const companyData = await getCompany(token)
-
-	if (!companyData)
-		return {
-			redirect: {
-				permanent: false,
-				destination: "/login",
-			},
-		}
-
+export const getServerSideProps = withCompanyAuth(async ({ data }) => {
 	const items = await getItems()
-
-	console.log(items)
 
 	return {
 		props: {
 			company: {
-				name: companyData.name,
+				name: data.name,
 			},
 			items,
 		},
 	}
-}
+})

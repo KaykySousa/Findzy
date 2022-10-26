@@ -1,8 +1,6 @@
 import CompanyCard from "@/components/CompanyCard"
 import { Header } from "@/components/index"
-import getUser from "@/utils/getUser"
-import { GetServerSideProps } from "next"
-import { parseCookies } from "nookies"
+import withUserAuth from "@/utils/withUserAuth"
 
 interface MainUserProps {
 	user: {
@@ -37,24 +35,10 @@ export default function MainUser({ user }: MainUserProps) {
 	)
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-	const { "findzy.token": token } = parseCookies(ctx)
-
-	const userData = await getUser(token)
-
-	if (!userData)
-		return {
-			redirect: {
-				permanent: false,
-				destination: "/login",
-			},
-		}
-
+export const getServerSideProps = withUserAuth(async ({ data }) => {
 	return {
 		props: {
-			user: {
-				name: userData.name,
-			},
+			name: data.name,
 		},
 	}
-}
+})
