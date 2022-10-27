@@ -5,6 +5,7 @@ import {
 	Cog8ToothIcon,
 	MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline"
+import Link from "next/link"
 
 interface HeaderProps {
 	showInput?: boolean
@@ -28,7 +29,11 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 				/>
 			)}
 			<div className="flex gap-x-4">
-				<ChatBubbleBottomCenterTextIcon className="h-6 w-6 text-purple-700" />
+				<Link href="/chat">
+					<a>
+						<ChatBubbleBottomCenterTextIcon className="h-6 w-6 text-purple-700" />
+					</a>
+				</Link>
 				<Cog8ToothIcon className="h-6 w-6 text-purple-700" />
 			</div>
 		</header>
