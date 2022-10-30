@@ -9,6 +9,7 @@ interface ItemCardProps {
 	description: string
 	images: string[]
 	defaultShowDescription?: boolean
+	onClick?: () => void
 }
 
 export default function ItemCard({
@@ -19,6 +20,7 @@ export default function ItemCard({
 	description,
 	images,
 	defaultShowDescription,
+	onClick,
 }: ItemCardProps) {
 	const [showDescription, setShowDescription] = useState(
 		defaultShowDescription || false
@@ -27,7 +29,8 @@ export default function ItemCard({
 
 	return (
 		<div
-			className={`w-full rounded-lg border border-gray-100 ${className}`}
+			className={`w-full cursor-pointer rounded-lg border border-gray-100 ${className}`}
+			onClick={onClick}
 		>
 			<div className="relative h-64 w-full overflow-hidden">
 				<div
@@ -51,7 +54,8 @@ export default function ItemCard({
 							key={index}
 							type="button"
 							className="h-2 w-2 cursor-pointer rounded-full bg-purple-700"
-							onClick={() => {
+							onClick={(e) => {
+								e.stopPropagation()
 								setImageSliderIndex(index)
 							}}
 						/>
@@ -73,7 +77,8 @@ export default function ItemCard({
 						className={`right-0 mt-1 h-6 w-6 cursor-pointer text-purple-700 transition-transform duration-300 md:absolute ${
 							showDescription ? "-rotate-180" : "rotate-0"
 						}`}
-						onClick={() => {
+						onClick={(e) => {
+							e.stopPropagation()
 							setShowDescription(!showDescription)
 						}}
 					/>
