@@ -20,7 +20,6 @@ const handler: NextApiHandler = async (req, res) => {
 			name,
 			cnpj,
 			cep,
-			number,
 			email,
 			phone,
 			password,
@@ -32,7 +31,6 @@ const handler: NextApiHandler = async (req, res) => {
 			!name ||
 			!cnpj ||
 			!cep ||
-			!number ||
 			!email ||
 			!phone ||
 			!password ||
@@ -55,7 +53,6 @@ const handler: NextApiHandler = async (req, res) => {
 				cnpj,
 				email,
 				name,
-				number,
 				password: passwordHash,
 				phone,
 				profile_picture_url: profilePictureUrl,
@@ -66,12 +63,13 @@ const handler: NextApiHandler = async (req, res) => {
 						district: address.district,
 						street: address.street,
 						uf: address.uf,
+						number: address.number
 					},
 				},
 			},
 		})
 
-		const token = tokenProvider(company.id)
+		const token = tokenProvider(company.id, "company")
 
 		return res.status(201).json({
 			token,
