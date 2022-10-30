@@ -1,18 +1,27 @@
 import prisma from "@/prisma/client"
 import CustomError from "@/utils/CustomError"
-import validateToken from "./validateToken"
 
-export default async function getCompany(token: string) {
+export default async function getCompany(id: string) {
 	try {
-		const decodedToken = validateToken(token)
-
-		if (!decodedToken) throw new CustomError("Token invalid")
-
 		const company = await prisma.company.findUnique({
-			where: { id: decodedToken.sub },
+			where: { id },
 			select: {
+				id: true,
 				name: true,
 				email: true,
+				address: {
+					select: {
+						cep: true,
+						city: true,
+						district: true,
+						id: true,
+						number: true,
+						street: true,
+						uf: true,
+					},
+				},
+				profile_picture_url: true,
+				phone: true,
 			},
 		})
 

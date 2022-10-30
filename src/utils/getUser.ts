@@ -1,16 +1,12 @@
 import prisma from "@/prisma/client"
 import CustomError from "@/utils/CustomError"
-import validateToken from "./validateToken"
 
-export default async function getUser(token: string) {
+export default async function getUser(id: string) {
 	try {
-		const decodedToken = validateToken(token)
-
-		if (!decodedToken) throw new CustomError("Token invalid")
-
 		const user = await prisma.user.findUnique({
-			where: { id: decodedToken.sub },
+			where: { id },
 			select: {
+				id: true,
 				name: true,
 				email: true,
 				birthdate: true,
