@@ -42,6 +42,7 @@ export default function RegisterUser() {
 			setCookie(null, "findzy.token", registerResponse.token, {
 				path: "/",
 				maxAge: 60 * 60, // 1 hour
+				sameSite: "strict",
 			})
 
 			router.push("/")

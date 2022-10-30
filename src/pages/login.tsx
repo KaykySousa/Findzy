@@ -33,6 +33,7 @@ export default function Login() {
 			setCookie(null, "findzy.token", loginResponse.token, {
 				path: "/",
 				maxAge: 60 * 60, // 1 hour
+				sameSite: "strict",
 			})
 
 			if (loginResponse.accountType === "user") {
