@@ -29,7 +29,7 @@ const handler: NextApiHandler = async (req, res) => {
 		dayjs.extend(utc)
 
 		if (dayjs(birthdate).isAfter(dayjs().subtract(16, "years"))) {
-			throw new Error("Você não possui a idade mínima para se cadastrar");
+			throw new Error("Você não possui a idade mínima para se cadastrar")
 		}
 
 		const user = await prisma.user.create({
@@ -47,7 +47,7 @@ const handler: NextApiHandler = async (req, res) => {
 			},
 		})
 
-		const token = tokenProvider(user.id)
+		const token = tokenProvider(user.id, "user")
 
 		return res.status(201).json({
 			token,
