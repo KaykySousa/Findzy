@@ -19,6 +19,8 @@ model User {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
+    conversations Conversation[]
+
     @@map("users")
 }
 
@@ -26,7 +28,6 @@ model Company {
     id                  String @id @default(cuid())
     name                String
     cnpj                String @unique
-    number              String
     email               String @unique
     phone               String
     password            String
@@ -34,7 +35,11 @@ model Company {
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
-    address    Address?
+
+    address Address?
+
+    conversations Conversation[]
+    items         Item[]
 
     @@map("companies")
 }
@@ -58,6 +63,10 @@ model Address {
     city     String
     uf       String
     cep      String
+    number   String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 
     company    Company @relation(fields: [company_id], references: [id])
     company_id String  @unique
@@ -73,6 +82,12 @@ model Item {
     description String
     images      ItemImage[]
 
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    company    Company? @relation(fields: [company_id], references: [id])
+    company_id String?
+
     @@map("items")
 }
 
@@ -80,8 +95,43 @@ model ItemImage {
     id        String @id @default(cuid())
     image_url String
 
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
     item_id String
     item    Item   @relation(fields: [item_id], references: [id])
 
     @@map("item_images")
+}
+
+model Conversation {
+    id String @id @default(cuid())
+
+    user    User?   @relation(fields: [user_id], references: [id])
+    user_id String?
+
+    company    Company? @relation(fields: [company_id], references: [id])
+    company_id String?
+
+    messages Message[]
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("conversations")
+}
+
+model Message {
+    id String @id @default(cuid())
+
+    content   String
+    sender_id String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    conversation    Conversation? @relation(fields: [conversation_id], references: [id])
+    conversation_id String?
+
+    @@map("messages")
 }
