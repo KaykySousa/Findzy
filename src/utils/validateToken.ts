@@ -1,5 +1,11 @@
 import CustomError from "@/utils/CustomError"
-import { decode, verify } from "jsonwebtoken"
+import { decode, JwtPayload, verify } from "jsonwebtoken"
+
+type decodedTokenData =
+	| (JwtPayload & {
+			accountType?: "user" | "company" | "admin"
+	  })
+	| null
 
 export default function validateToken(token: string | undefined) {
 	try {
@@ -11,7 +17,7 @@ export default function validateToken(token: string | undefined) {
 			throw new CustomError("Token invalid")
 		}
 
-		const decodedToken = decode(token, {
+		const decodedToken: decodedTokenData = decode(token, {
 			json: true,
 		})
 

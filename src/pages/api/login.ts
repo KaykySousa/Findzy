@@ -30,7 +30,7 @@ const handler: NextApiHandler = async (req, res) => {
 					statusCode: 403,
 				})
 
-			const token = tokenProvider(user.id)
+			const token = tokenProvider(user.id, "user")
 
 			return res.status(200).json({
 				token,
@@ -50,7 +50,7 @@ const handler: NextApiHandler = async (req, res) => {
 					statusCode: 403,
 				})
 
-			const token = tokenProvider(company.id)
+			const token = tokenProvider(company.id, "company")
 
 			return res.status(200).json({
 				token,
@@ -70,7 +70,7 @@ const handler: NextApiHandler = async (req, res) => {
 					statusCode: 403,
 				})
 
-			const token = tokenProvider(admin.id)
+			const token = tokenProvider(admin.id, "admin")
 
 			return res.status(200).json({
 				token,
