@@ -69,11 +69,13 @@ export default function RegisterUser() {
 						name,
 						cnpj,
 						cep,
-						number,
 						email,
 						phone,
 						password,
-						address,
+						address: {
+							...address,
+							number,
+						},
 						profilePicture,
 					}
 				)
@@ -81,6 +83,7 @@ export default function RegisterUser() {
 			setCookie(null, "findzy.token", registerResponse.token, {
 				path: "/",
 				maxAge: 60 * 60, // 1 hour
+				sameSite: "strict"
 			})
 
 			router.push("/company")
