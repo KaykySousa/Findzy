@@ -14,6 +14,7 @@ interface BodyData {
 	description: string
 	local: string
 	name: string
+	companyId: string
 	images: string[]
 }
 
@@ -27,10 +28,25 @@ const handler: NextApiHandler = async (req, res) => {
 
 		let imagesUrl: ImagesUrlData[] = []
 
-		const { category, color, description, local, name, images }: BodyData =
-			req.body
+		const {
+			category,
+			color,
+			description,
+			local,
+			name,
+			images,
+			companyId,
+		}: BodyData = req.body
 
-		if (!category || !color || !description || !local || !name || !images) {
+		if (
+			!category ||
+			!color ||
+			!description ||
+			!local ||
+			!name ||
+			!images ||
+			!companyId
+		) {
 			throw new CustomError("Missing parameters")
 		}
 
@@ -58,6 +74,7 @@ const handler: NextApiHandler = async (req, res) => {
 						data: imagesUrl,
 					},
 				},
+				company_id: companyId,
 			},
 		})
 
