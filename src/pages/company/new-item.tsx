@@ -1,7 +1,7 @@
 import { Button, Input, Select } from "@/components/design"
 import { Header, ImageUpload, ItemCard } from "@/components/index"
 import { api } from "@/services/axios"
-import withCompanyAuth from "@/utils/withCompanyAuth"
+import withAuth from "@/utils/withAuth"
 import {
 	ArrowLeftIcon,
 	ArrowRightIcon,
@@ -20,7 +20,13 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
 
-export default function NewItem() {
+interface NewItemProps {
+	company: {
+		id: string
+	}
+}
+
+export default function NewItem({ company }: NewItemProps) {
 	const [name, setName] = useState("")
 	const [category, setCategory] = useState("")
 	const [color, setColor] = useState("")
@@ -43,6 +49,7 @@ export default function NewItem() {
 				local,
 				description,
 				images,
+				companyId: company.id,
 			})
 
 			router.push("/company")
@@ -298,8 +305,12 @@ export default function NewItem() {
 	)
 }
 
-export const getServerSideProps = withCompanyAuth(async () => {
+export const getServerSideProps = withAuth(["company"], async ({ data }) => {
 	return {
-		props: {},
+		props: {
+			company: {
+				id: data.id,
+			},
+		},
 	}
 })
