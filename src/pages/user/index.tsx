@@ -1,44 +1,67 @@
 import CompanyCard from "@/components/CompanyCard"
 import { Header } from "@/components/index"
-import withUserAuth from "@/utils/withUserAuth"
+import prisma from "@/prisma/client"
+import withAuth from "@/utils/withAuth"
+import { Address } from "@prisma/client"
+import { useRouter } from "next/router"
 
 interface MainUserProps {
-	user: {
+	companies: {
+		address: Address
+		id: string
 		name: string
-		email: string
-		birthdate: string
-		exp: string
-	}
+		profile_picture_url: string
+	}[]
 }
 
-export default function MainUser({ user }: MainUserProps) {
+export default function MainUser({ companies }: MainUserProps) {
+	const router = useRouter()
+
 	return (
 		<div className="min-h-screen w-full bg-white">
 			<Header />
 			<div className="flex w-full flex-col items-center gap-y-2 p-2 md:p-0 md:py-4">
-				<CompanyCard
-					company="ETEC da Zona Leste"
-					address="Av. Águia de Haia, 2633 - Cidade A. E. Carvalho"
-					logoUrl="https://yt3.ggpht.com/ytc/AMLnZu-9lToKfZByYACsoOPzQnckD9O7hJVJRrWaZKZQ5Q=s900-c-k-c0x00ffffff-no-rj"
-					itemsNumber={17}
-					rating={5}
-				/>
-				<CompanyCard
-					company="Assaí Atacadista"
-					address="Av. Águia de Haia, 3362 - Cidade A. E. Carvalho"
-					logoUrl="https://gazetaempregosrj.com.br/images/assai-atacadista.jpg"
-					itemsNumber={11}
-					rating={4.9}
-				/>
+				{companies.map((company, index) => (
+					<CompanyCard
+						key={index}
+						company={company.name}
+						address={`${company.address.street}, ${company.address.number} - ${company.address.district} - ${company.address.uf}`}
+						logoUrl={company.profile_picture_url}
+						itemsNumber={17}
+						rating={5}
+						href={`/company/${company.id}`}
+					/>
+				))}
 			</div>
 		</div>
 	)
 }
 
-export const getServerSideProps = withUserAuth(async ({ data }) => {
-	return {
-		props: {
-			name: data.name,
-		},
+export const getServerSideProps = withAuth(
+	["user", "company"],
+	async ({ data }) => {
+		const companies = await prisma.company.findMany({
+			select: {
+				id: true,
+				name: true,
+				address: {
+					select: {
+						cep: true,
+						city: true,
+						district: true,
+						number: true,
+						street: true,
+						uf: true,
+					},
+				},
+				profile_picture_url: true,
+			},
+		})
+
+		return {
+			props: {
+				companies,
+			},
+		}
 	}
-})
+)
