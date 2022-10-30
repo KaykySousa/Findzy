@@ -25,7 +25,7 @@ export default function Input({
 			)}
 			<input
 				type={type || "text"}
-				className={`h-10 w-full cursor-text rounded border-0 bg-gray-100 placeholder:text-sm focus:border-purple-700 focus:ring-0 ${
+				className={`h-10 w-full cursor-text rounded border-0 bg-gray-100 placeholder:text-sm focus:ring-purple-700 ${
 					icon && "pl-9"
 				} ${inputClassName}`}
 				{...props}
