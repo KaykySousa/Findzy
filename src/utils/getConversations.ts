@@ -1,19 +1,18 @@
 import prisma from "@/prisma/client"
 import CustomError from "./CustomError"
-import validateToken from "./validateToken"
 
-export default async function getConversations(token: string) {
+export default async function getConversations(id: string) {
 	try {
-		const decodedToken = validateToken(token)
-
-		if (!decodedToken) throw new CustomError("Token invalid")
-
 		const conversations = await prisma.conversation.findMany({
 			where: {
-				OR: {
-					company_id: decodedToken.sub,
-					user_id: decodedToken.sub,
-				},
+				OR: [
+					{
+						company_id: id,
+					},
+					{
+						user_id: id,
+					},
+				],
 			},
 			include: {
 				company: {
