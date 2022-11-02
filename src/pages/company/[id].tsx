@@ -70,7 +70,7 @@ export default function MainCompany({
 					{canEdit && (
 						<LinkButton
 							href="/company/new-item"
-							buttonClassName="md:!h-full md:flex-col"
+							buttonClassName="md:!h-full md:flex-col min-h-[22rem]"
 							theme="tertiary"
 						>
 							<PlusIcon className="mr-1 h-6 w-6 md:mb-4 md:h-10 md:w-10" />
