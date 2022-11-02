@@ -82,11 +82,11 @@ export default function RegisterUser() {
 
 			setCookie(null, "findzy.token", registerResponse.token, {
 				path: "/",
-				maxAge: 60 * 60, // 1 hour
-				sameSite: "strict"
+				maxAge: 60 * 60 * 24 * 7, // 7 days
+				sameSite: "strict",
 			})
 
-			router.push("/company")
+			router.push("/")
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const error = (err.response?.data as any).error
