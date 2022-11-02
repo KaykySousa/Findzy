@@ -63,7 +63,7 @@ const handler: NextApiHandler = async (req, res) => {
 						district: address.district,
 						street: address.street,
 						uf: address.uf,
-						number: address.number
+						number: address.number,
 					},
 				},
 			},
@@ -79,7 +79,6 @@ const handler: NextApiHandler = async (req, res) => {
 			},
 		})
 	} catch (e) {
-		console.log(e)
 		const { error, statusCode } = handleError(e)
 		return res.status(statusCode).json({ error })
 	}
