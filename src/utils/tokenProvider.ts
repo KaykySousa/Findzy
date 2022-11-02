@@ -12,7 +12,7 @@ export default function tokenProvider(
 		{
 			subject,
 			issuer: "Findzy",
-			expiresIn: "1h",
+			expiresIn: "7d",
 		}
 	)
 
