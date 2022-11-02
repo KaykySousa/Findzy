@@ -32,17 +32,11 @@ export default function Login() {
 
 			setCookie(null, "findzy.token", loginResponse.token, {
 				path: "/",
-				maxAge: 60 * 60, // 1 hour
+				maxAge: 60 * 60 * 24 * 7, // 7 days
 				sameSite: "strict",
 			})
 
-			if (loginResponse.accountType === "user") {
-				router.push("/user")
-			} else if (loginResponse.accountType === "company") {
-				router.push("/company")
-			} else if (loginResponse.accountType === "admin") {
-				router.push("/admin")
-			}
+			router.push("/")
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const error = (err.response?.data as any).error
