@@ -53,7 +53,7 @@ export default function Select({
 				{options.map((optionValue, index) => (
 					<option
 						className="text-base text-black"
-						value={optionValue.toLowerCase()}
+						value={optionValue}
 						key={index}
 					>
 						{optionValue}
