@@ -52,7 +52,7 @@ export default function NewItem({ company }: NewItemProps) {
 				companyId: company.id,
 			})
 
-			router.push("/company")
+			router.push("/")
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const error = (err.response?.data as any).error
