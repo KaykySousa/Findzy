@@ -118,6 +118,7 @@ model Conversation {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
+    @@unique(fields: [user_id, company_id])
     @@map("conversations")
 }
 
