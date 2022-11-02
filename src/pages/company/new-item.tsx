@@ -110,6 +110,11 @@ export default function NewItem({ company }: NewItemProps) {
 									"Documentos",
 									"Roupas",
 									"Bolsas, Mochilas ou Carteiras",
+									"Brinquedos",
+									"Livros e cadernos",
+									"Chaves",
+									"Óculos",
+									"Dinheiro",
 									"Outro",
 								]}
 								value={category}
@@ -119,14 +124,23 @@ export default function NewItem({ company }: NewItemProps) {
 								required
 							/>
 							<Select
-								textLabel="Cor"
+								textLabel="Cor predominante"
 								defaultOption="Selecione"
 								options={[
 									"Amarelo",
-									"Dourado",
-									"Preto",
 									"Azul",
 									"Branco",
+									"Cinza",
+									"Dourado",
+									"Laranja",
+									"Marrom",
+									"Prata",
+									"Preto",
+									"Rosa",
+									"Roxo",
+									"Verde",
+									"Vermelho",
+									"Outro",
 									"Indiferente",
 								]}
 								value={color}
