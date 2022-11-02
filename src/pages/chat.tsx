@@ -1,16 +1,20 @@
 import ChatMessage from "@/components/ChatMessage"
 import { Input } from "@/components/design"
 import Header from "@/components/Header"
+import { api } from "@/services/axios"
+import { MessagesResponseData } from "@/types/api"
 import getCompany from "@/utils/getCompany"
 import getConversations from "@/utils/getConversations"
 import getUser from "@/utils/getUser"
+import validateToken from "@/utils/validateToken"
 import { PaperAirplaneIcon, PhotoIcon } from "@heroicons/react/24/outline"
+import useChannel from "hooks/useChannel"
 import { GetServerSideProps } from "next"
 import { parseCookies } from "nookies"
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 
 interface MessageData {
-	sender: "me" | "other"
+	sender: string
 	message: string
 }
 
@@ -38,13 +42,53 @@ export default function Chat({
 }: ChatProps) {
 	const [messageToSend, setMessageToSend] = useState("")
 	const [chatMessages, setChatMessages] = useState<MessageData[]>([])
+	const [channelName, setChannelName] = useState("")
 
-	function sendMessage(e: FormEvent) {
+	const channel = useChannel(channelName, (message) => {
+		setChatMessages([
+			...chatMessages,
+			{
+				message: message.data.content,
+				sender: message.data.senderId,
+			},
+		])
+	})
+
+	useEffect(() => {
+		api.post<MessagesResponseData>("/api/get-messages", {
+			conversationId: channelName,
+		}).then((historyMessagesResponse) => {
+			const historyMessages = historyMessagesResponse.data.messages.map(
+				(message) => {
+					return {
+						message: message.content,
+						sender: message.sender_id,
+					}
+				}
+			)
+			setChatMessages(historyMessages)
+		})
+	}, [channelName])
+
+	async function sendMessage(e: FormEvent) {
 		e.preventDefault()
 
 		if (!messageToSend) return
 
-		//TODO: Publish message in a channel
+		if (!channel) return
+
+		channel.publish({
+			name: "chat-message",
+			data: {
+				content: messageToSend,
+				senderId: accountData.id,
+			},
+		})
+
+		await api.post("/api/send-message", {
+			conversationId: channelName,
+			content: messageToSend,
+		})
 
 		setMessageToSend("")
 	}
@@ -61,11 +105,22 @@ export default function Chat({
 						<div className="flex w-full flex-1 flex-col gap-y-2">
 							{conversations?.map((conversation, index) => (
 								<div
-									className="flex cursor-pointer items-center rounded-md border border-purple-700 p-2"
+									className={`flex cursor-pointer items-center rounded-md border p-2 ${
+										conversation.id === channelName
+											? "border-purple-700"
+											: "border-gray-300"
+									}`}
 									key={index}
+									onClick={() => {
+										setChannelName(conversation.id)
+									}}
 								>
 									<img
-										src="https://www.w3schools.com/howto/img_avatar.png"
+										src={
+											conversation.data
+												.profile_picture_url ||
+											"https://www.w3schools.com/howto/img_avatar.png"
+										}
 										alt=""
 										className="mr-2 h-12 w-12 rounded-full object-cover"
 									/>
@@ -77,19 +132,31 @@ export default function Chat({
 						</div>
 					</div>
 					<div className="hidden w-full flex-col md:flex">
-						<div className="flex flex-1 flex-col-reverse overflow-y-auto p-4">
-							<div className="flex flex-col gap-y-2">
-								{chatMessages.map(
-									({ message, sender }, index) => (
-										<ChatMessage
-											key={index}
-											message={message}
-											sender={sender}
-										/>
-									)
-								)}
+						{channelName ? (
+							<div className="flex flex-1 flex-col-reverse overflow-y-auto p-4">
+								<div className="flex flex-col gap-y-2">
+									{chatMessages.map(
+										({ message, sender }, index) => (
+											<ChatMessage
+												key={index}
+												message={message}
+												sender={
+													sender === accountData.id
+														? "me"
+														: "other"
+												}
+											/>
+										)
+									)}
+								</div>
 							</div>
-						</div>
+						) : (
+							<div className="flex flex-1 items-center justify-center p-4">
+								<p className="text-xl text-gray-600">
+									Selecione uma Conversa
+								</p>
+							</div>
+						)}
 						<form
 							className="flex items-center gap-x-2 border-t border-gray-100 p-4"
 							onSubmit={sendMessage}
@@ -118,9 +185,20 @@ export default function Chat({
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const { "findzy.token": token } = parseCookies(ctx)
 
-	const conversations = await getConversations(token)
+	const decodedToken = validateToken(token)
 
-	const userData = await getUser(token)
+	if (!decodedToken) {
+		return {
+			redirect: {
+				permanent: false,
+				destination: "/login",
+			},
+		}
+	}
+
+	const conversations = await getConversations(decodedToken.sub!)
+
+	const userData = await getUser(decodedToken.sub!)
 
 	if (userData) {
 		const userConversations = conversations?.map((conversation) => {
@@ -148,7 +226,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		}
 	}
 
-	const companyData = await getCompany(token)
+	const companyData = await getCompany(decodedToken.sub!)
 
 	if (companyData) {
 		const companyConversations = conversations?.map((conversation) => {
