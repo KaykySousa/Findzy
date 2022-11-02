@@ -1,10 +1,21 @@
 import axios from "axios"
 import { parseCookies } from "nookies"
 
-const { "findzy.token": token } = parseCookies()
+interface HeadersData {
+	authorization: string
+}
 
 export const api = axios.create()
 
-if (token) {
-	api.defaults.headers.common["authorization"] = `Bearer ${token}`
-}
+api.interceptors.request.use((config) => {
+	const { "findzy.token": token } = parseCookies()
+
+	if (token) {
+		config.headers = {
+			...config.headers,
+			authorization: `Bearer ${token}`,
+		}
+	}
+
+	return config
+})
