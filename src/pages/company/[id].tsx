@@ -12,6 +12,7 @@ import {
 	PlusIcon,
 } from "@heroicons/react/24/outline"
 import { Address } from "@prisma/client"
+import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
 
 interface ItemData {
@@ -47,6 +48,8 @@ export default function MainCompany({
 	const [viewItemImageSliderIndex, setViewItemImageSliderIndex] = useState(0)
 	const [claimMessage, setClaimMessage] = useState("")
 
+	const router = useRouter()
+
 	async function handleSendClaimMessage(e: FormEvent) {
 		e.preventDefault()
 
@@ -54,6 +57,8 @@ export default function MainCompany({
 			toId: company.id,
 			content: claimMessage,
 		})
+
+		router.push("/chat")
 	}
 
 	return (
