@@ -57,6 +57,7 @@ export default function RegisterUser() {
 	}
 
 	async function handleSubmit(profilePicture: string) {
+		setLoading(true)
 		try {
 			if (password !== passwordConfirmation) {
 				throw new CustomError("As senhas não conferem")
@@ -95,6 +96,7 @@ export default function RegisterUser() {
 				toast.error(err.message)
 			}
 		}
+		setLoading(false)
 	}
 
 	return (
@@ -137,8 +139,8 @@ export default function RegisterUser() {
 								setCnpj(e.target.value)
 							}}
 						/>
-						<div className="flex w-full flex-col gap-y-6 md:flex-row md:gap-x-6">
-							<div className="w-full">
+						<div className="flex w-full flex-col">
+							<div className="flex w-full flex-col gap-y-6 md:flex-row md:gap-x-6">
 								<FloatingInput
 									placeholder="CEP"
 									mask="cep"
@@ -156,27 +158,27 @@ export default function RegisterUser() {
 										}
 									}}
 								/>
-								<Anchor
-									className="mt-2"
-									href="https://buscacepinter.correios.com.br/app/endereco/index.php"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									Não sabe o seu CEP?
-								</Anchor>
-								<p className="text-sm text-slate-500">
-									{address &&
-										`${address.street} - ${address.district} - ${address.city} - ${address.uf}`}
-								</p>
+								<FloatingInput
+									placeholder="Número"
+									required
+									value={number}
+									onChange={(e) => {
+										setNumber(e.target.value)
+									}}
+								/>
 							</div>
-							<FloatingInput
-								placeholder="Número"
-								required
-								value={number}
-								onChange={(e) => {
-									setNumber(e.target.value)
-								}}
-							/>
+							<Anchor
+								className="mt-2"
+								href="https://buscacepinter.correios.com.br/app/endereco/index.php"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Não sabe o seu CEP?
+							</Anchor>
+							<p className="text-sm text-slate-500">
+								{address &&
+									`${address.street} - ${address.district} - ${address.city} - ${address.uf}`}
+							</p>
 						</div>
 						<FloatingInput
 							type="email"
@@ -224,9 +226,8 @@ export default function RegisterUser() {
 						type="submit"
 						form="user-register-form"
 						className="mb-2"
-						loading={loading}
 					>
-						Cadastrar
+						Continuar
 					</Button>
 					<LinkButton
 						href="/login"
@@ -250,7 +251,15 @@ export default function RegisterUser() {
 				</LinkButton>
 			</div>
 
-			{showImageUpload && <ImageUpload onUploadButton={handleSubmit} />}
+			{showImageUpload && (
+				<ImageUpload
+					title="Também precisamos do logotipo do seu estabelecimento"
+					dropMessage="Arraste seu logo aqui"
+					buttonTitle="Iniciar Solicitação"
+					loading={loading}
+					onUploadButton={handleSubmit}
+				/>
+			)}
 		</div>
 	)
 }

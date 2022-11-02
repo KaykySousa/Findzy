@@ -299,6 +299,9 @@ export default function NewItem({ company }: NewItemProps) {
 						setImages([...images, image])
 						setShowImageUpload(false)
 					}}
+					title="Insira uma imagem do item"
+					dropMessage="Arraste sua imagem aqui"
+					buttonTitle="Carregar"
 				/>
 			)}
 		</div>
