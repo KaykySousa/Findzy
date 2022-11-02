@@ -9,7 +9,7 @@ import {
 	ChevronRightIcon,
 	EnvelopeIcon,
 	PhoneIcon,
-	PlusIcon
+	PlusIcon,
 } from "@heroicons/react/24/outline"
 import { Address } from "@prisma/client"
 import { FormEvent, useState } from "react"
@@ -50,12 +50,10 @@ export default function MainCompany({
 	async function handleSendClaimMessage(e: FormEvent) {
 		e.preventDefault()
 
-		const res = await api.post("/api/send-message", {
+		const res = await api.post("/api/send-claim-message", {
 			toId: company.id,
 			content: claimMessage,
 		})
-
-		console.log(res)
 	}
 
 	return (
