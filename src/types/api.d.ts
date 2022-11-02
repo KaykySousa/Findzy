@@ -24,3 +24,10 @@ export interface CompanyRegisterResponseData {
 		birthdate: string
 	}
 }
+
+export interface MessagesResponseData {
+	messages: {
+		content: string
+		sender_id: string
+	}[]
+}
