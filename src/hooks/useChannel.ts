@@ -4,7 +4,7 @@ import { useEffect } from "react"
 
 const ably = new Realtime.Promise({
 	authUrl: `${
-		process.env.VERCEL_URL || "http://localhost:3000"
+		process.env.FINDZY_BASE_URL || "http://localhost:3000"
 	}/api/ably-token`,
 })
 
