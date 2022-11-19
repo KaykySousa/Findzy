@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import { parseCookies } from "nookies"
+import getAdmin from "./getAdmin"
 import getCompany from "./getCompany"
 import getUser from "./getUser"
 import validateToken from "./validateToken"
@@ -7,7 +8,7 @@ import validateToken from "./validateToken"
 type gsspType = (data: {
 	context: GetServerSidePropsContext
 	data: { [key: string]: any }
-	accountType: "user" | "company"
+	accountType: "user" | "company" | "admin"
 }) => Promise<GetServerSidePropsResult<any>>
 
 export default function withAuth(
@@ -63,6 +64,27 @@ export default function withAuth(
 				context,
 				data: companyData,
 				accountType: "company",
+			})
+		}
+
+		if (
+			decodedToken.accountType === "admin" &&
+			accountTypeAllowed.indexOf("admin") !== -1
+		) {
+			const adminData = await getAdmin(decodedToken.sub!)
+
+			if (!adminData)
+				return {
+					redirect: {
+						permanent: false,
+						destination: "/login",
+					},
+				}
+
+			return await gssp({
+				context,
+				data: adminData,
+				accountType: "admin",
 			})
 		}
 
