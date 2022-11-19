@@ -34,7 +34,9 @@ export default function CompanyCard({
 						</div>
 						<div className="mt-2 flex justify-between">
 							<span className="text-sm text-gray-700">
-								{itemsNumber} itens
+								{`${itemsNumber} ${
+									itemsNumber === 1 ? "item" : "itens"
+								}`}
 							</span>
 							<div className="flex items-center text-amber-400">
 								<span className="mr-1 text-sm">
