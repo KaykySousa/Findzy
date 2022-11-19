@@ -1,4 +1,5 @@
 import { Logo } from "@/components/index"
+import SEO from "@/components/SEO"
 import { Anchor, Button, FloatingInput, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { LoginResponseData } from "@/types/api"
@@ -51,6 +52,10 @@ export default function Login() {
 
 	return (
 		<div className="flex min-h-screen w-full">
+			<SEO
+				title="Login"
+				description="Ingresse no Findzy e encontre facilmente seu objeto desaparecido"
+			/>
 			<div className="hidden w-2/5 flex-col bg-purple-700 p-10 lg:flex">
 				<Logo className="hiden mb-4 !text-xl !text-white lg:block" />
 				<div className="flex flex-1 flex-col items-center justify-center gap-y-8">
