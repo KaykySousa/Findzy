@@ -1,7 +1,10 @@
 import { cloudinary } from "@/services/cloudinary"
 import { UploadApiResponse } from "cloudinary"
 
-type PresetType = "findzy-company-profile-pictures" | "findzy-items"
+type PresetType =
+	| "findzy-company-profile-pictures"
+	| "findzy-items"
+	| "findzy-reports"
 
 type ImageUploader = (
 	imageBase64: string,
