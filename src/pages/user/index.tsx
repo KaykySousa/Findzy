@@ -11,6 +11,10 @@ interface MainUserProps {
 		id: string
 		name: string
 		profile_picture_url: string
+		_count: {
+			items: number
+			companies_reports: number
+		}
 	}[]
 }
 
@@ -27,8 +31,11 @@ export default function MainUser({ companies }: MainUserProps) {
 						company={company.name}
 						address={`${company.address.street}, ${company.address.number} - ${company.address.district} - ${company.address.uf}`}
 						logoUrl={company.profile_picture_url}
-						itemsNumber={17}
-						rating={5}
+						itemsNumber={company._count.items}
+						rating={Math.max(
+							5 - company._count.companies_reports / 10,
+							0
+						)}
 						href={`/company/${company.id}`}
 					/>
 				))}
@@ -55,8 +62,16 @@ export const getServerSideProps = withAuth(
 					},
 				},
 				profile_picture_url: true,
+				_count: {
+					select: {
+						items: true,
+						companies_reports: true,
+					},
+				},
 			},
 		})
+
+		console.log(companies[0]._count.companies_reports)
 
 		return {
 			props: {
