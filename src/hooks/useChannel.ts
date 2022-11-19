@@ -3,7 +3,9 @@ import { Realtime } from "ably/promises"
 import { useEffect } from "react"
 
 const ably = new Realtime.Promise({
-	authUrl: "/api/ably-token",
+	authUrl: `${
+		process.env.ENVIRONMENT === "development" ? "http://localhost:3000" : ""
+	}/api/ably-token`,
 })
 
 export default function useChannel(
