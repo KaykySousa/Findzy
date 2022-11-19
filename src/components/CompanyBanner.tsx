@@ -1,11 +1,13 @@
 import { FlagIcon } from "@heroicons/react/24/outline"
 import { StarIcon } from "@heroicons/react/24/solid"
+import Link from "next/link"
 
 interface CompanyBannerProps {
 	name: string
 	address: string
 	rating: number
 	profile_picture_url: string
+	companyId: string
 }
 
 export default function CompanyBanner({
@@ -13,6 +15,7 @@ export default function CompanyBanner({
 	address,
 	profile_picture_url,
 	rating,
+	companyId,
 }: CompanyBannerProps) {
 	return (
 		<div className="flex h-72 w-full flex-col">
@@ -31,7 +34,11 @@ export default function CompanyBanner({
 					<p className="mt-2 font-bold text-gray-800">{name}</p>
 					<p className="mt-1 text-sm text-gray-700">{address}</p>
 				</div>
-				<FlagIcon className="h-6 w-6 cursor-pointer text-purple-700" />
+				<Link href={`/report/${companyId}`}>
+					<a>
+						<FlagIcon className="h-6 w-6 cursor-pointer text-purple-700" />
+					</a>
+				</Link>
 			</div>
 		</div>
 	)
