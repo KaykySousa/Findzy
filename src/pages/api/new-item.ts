@@ -2,7 +2,7 @@ import prisma from "@/prisma/client"
 import CustomError from "@/utils/CustomError"
 import handleError from "@/utils/handleError"
 import imageUploader from "@/utils/imageUploader"
-import { NextApiHandler } from "next"
+import { NextApiHandler, PageConfig } from "next"
 
 interface ImagesUrlData {
 	image_url: string
@@ -56,6 +56,7 @@ const handler: NextApiHandler = async (req, res) => {
 					image,
 					"findzy-items"
 				)
+				console.log(imageUrl)
 				imagesUrl.push({ image_url: imageUrl })
 				if (imagesUrl.length === images.length) {
 					resolve(imagesUrl)
@@ -83,6 +84,14 @@ const handler: NextApiHandler = async (req, res) => {
 		const { error, statusCode } = handleError(e)
 		return res.status(statusCode).json({ error })
 	}
+}
+
+export const config: PageConfig = {
+	api: {
+		bodyParser: {
+			sizeLimit: "16mb",
+		},
+	},
 }
 
 export default handler
