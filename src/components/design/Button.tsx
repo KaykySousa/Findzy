@@ -14,11 +14,11 @@ export default function Button({
 }: ButtonProps) {
 	const themes = {
 		primary:
-			"h-12 w-full rounded-md bg-purple-700 text-lg font-bold text-white disabled:bg-purple-500",
+			"h-12 w-full rounded-md bg-purple-700 text-lg font-bold text-white disabled:bg-purple-500 hover:bg-purple-800 active:translate-y-0.5",
 		secondary:
-			"h-12 w-full rounded-md bg-white font-bold text-purple-700 disabled:bg-gray-200",
+			"h-12 w-full rounded-md bg-white font-bold text-purple-700 disabled:bg-gray-200 hover:bg-gray-100 active:translate-y-0.5",
 		tertiary:
-			"h-12 w-full flex justify-center items-center rounded-md bg-purple-200 font-bold text-purple-700 hover:bg-purple-300",
+			"h-12 w-full flex justify-center items-center rounded-md bg-purple-200 font-bold text-purple-700 hover:bg-purple-300 active:translate-y-0.5",
 	}
 
 	return (
