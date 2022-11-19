@@ -1,3 +1,4 @@
+import getAdmin from "@/utils/getAdmin"
 import getCompany from "@/utils/getCompany"
 import getUser from "@/utils/getUser"
 import validateToken from "@/utils/validateToken"
@@ -39,6 +40,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			redirect: {
 				permanent: false,
 				destination: `/company/${companyData.id}`,
+			},
+		}
+
+	const adminData = await getAdmin(decodedToken.sub!)
+
+	if (adminData)
+		return {
+			redirect: {
+				permanent: false,
+				destination: `/admin`,
 			},
 		}
 
