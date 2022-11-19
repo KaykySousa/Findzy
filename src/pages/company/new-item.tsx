@@ -1,4 +1,5 @@
 import { Button, Input, Select } from "@/components/design"
+import ImageCard from "@/components/ImageCard"
 import { Header, ImageUpload, ItemCard } from "@/components/index"
 import { api } from "@/services/axios"
 import withAuth from "@/utils/withAuth"
@@ -198,37 +199,25 @@ export default function NewItem({ company }: NewItemProps) {
 							</div>
 							<div className="flex flex-col gap-y-4">
 								{images.map((image, index) => (
-									<div
-										className="flex h-16 w-full items-center"
+									<ImageCard
 										key={index}
-									>
-										<img
-											src={image}
-											alt=""
-											className="h-16 w-16 rounded object-cover"
-										/>
-										<span className="ml-2 w-full text-sm text-gray-600">
-											Imagem {index + 1}
-										</span>
-										<XMarkIcon
-											className="h-8 w-8 cursor-pointer text-gray-600"
-											onClick={() => {
-												setImages(
-													images.filter(
-														(
-															imageToDel,
-															indexToDel
-														) => {
-															return (
-																indexToDel !==
-																index
-															)
-														}
-													)
+										imageSrc={image}
+										title={`Imagem ${index + 1}`}
+										onDelete={() => {
+											setImages(
+												images.filter(
+													(
+														imageToDel,
+														indexToDel
+													) => {
+														return (
+															indexToDel !== index
+														)
+													}
 												)
-											}}
-										/>
-									</div>
+											)
+										}}
+									/>
 								))}
 							</div>
 							<Button
@@ -316,6 +305,9 @@ export default function NewItem({ company }: NewItemProps) {
 					title="Insira uma imagem do item"
 					dropMessage="Arraste sua imagem aqui"
 					buttonTitle="Carregar"
+					onClose={() => {
+						setShowImageUpload(false)
+					}}
 				/>
 			)}
 		</div>
