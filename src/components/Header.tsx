@@ -210,8 +210,9 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 												}}
 											>
 												{companiesFound.map(
-													(company) => (
+													(company, index) => (
 														<Link
+															key={index}
 															href={`/company/${company.id}`}
 														>
 															<a>
@@ -261,8 +262,9 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 										ITENS
 									</p>
 									<div className="flex w-full flex-col items-center justify-between">
-										{itemsFound.map((item) => (
+										{itemsFound.map((item, index) => (
 											<ItemCard
+												key={index}
 												color={item.color}
 												description={item.description}
 												images={item.images}
