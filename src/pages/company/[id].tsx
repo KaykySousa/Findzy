@@ -1,4 +1,5 @@
 import { Button, LinkButton } from "@/components/design"
+import TextArea from "@/components/design/TextArea"
 import { CompanyBanner, Header, ItemCard } from "@/components/index"
 import { api } from "@/services/axios"
 import getCompany from "@/utils/getCompany"
@@ -14,6 +15,7 @@ import {
 import { Address } from "@prisma/client"
 import { useRouter } from "next/router"
 import { FormEvent, useState } from "react"
+import { toast } from "react-toastify"
 
 interface ItemData {
 	images: string[]
@@ -53,6 +55,10 @@ export default function MainCompany({
 	async function handleSendClaimMessage(e: FormEvent) {
 		e.preventDefault()
 
+		if (!claimMessage) {
+			toast.error("Escreva uma mensagem para resgatar o item")
+		}
+
 		const res = await api.post("/api/send-claim-message", {
 			toId: company.id,
 			content: claimMessage,
@@ -70,6 +76,7 @@ export default function MainCompany({
 					name={company.name}
 					rating={5.0}
 					profile_picture_url={company.profile_picture_url}
+					companyId={company.id}
 				/>
 				<div className="flex w-full grid-cols-3 flex-col gap-y-4 p-2 md:grid md:gap-x-4 md:py-4">
 					{canEdit && (
@@ -188,8 +195,8 @@ export default function MainCompany({
 							<p className="mb-4 font-bold">
 								Este item é seu? Conte a sua história.
 							</p>
-							<textarea
-								className="mb-4 w-full flex-1 resize-none rounded border-gray-300 focus:border-purple-700 focus:ring-purple-700"
+							<TextArea
+								className="mb-4"
 								placeholder="Oi, eu estive aí ontem as 13h e acabei esquecendo meu carregador debaixo da mesa!"
 								value={claimMessage}
 								onChange={(e) => {
