@@ -2,7 +2,7 @@ import { Head, Html, Main, NextScript } from "next/document"
 
 export default function Document() {
 	return (
-		<Html>
+		<Html lang="pt-BR">
 			<Head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link
@@ -13,6 +13,12 @@ export default function Document() {
 				<link
 					href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap"
 					rel="stylesheet"
+				/>
+				<link
+					rel="shortcut icon"
+					href="/favicon.png"
+					type="image/png"
+					sizes="256x256"
 				/>
 			</Head>
 			<body>
