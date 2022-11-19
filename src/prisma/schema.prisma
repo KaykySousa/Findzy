@@ -1,6 +1,6 @@
 generator client {
     provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+    previewFeatures = ["referentialIntegrity", "fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -19,7 +19,9 @@ model User {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    conversations Conversation[]
+    conversations     Conversation[]
+    companies_reports CompanyReport[]
+    users_reports     UserReport[]
 
     @@map("users")
 }
@@ -32,15 +34,19 @@ model Company {
     phone               String
     password            String
     profile_picture_url String
+    status              String @default("review")
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
     address Address?
 
-    conversations Conversation[]
-    items         Item[]
+    conversations     Conversation[]
+    items             Item[]
+    companies_reports CompanyReport[]
+    users_reports     UserReport[]
 
+    @@fulltext([name])
     @@map("companies")
 }
 
@@ -88,6 +94,8 @@ model Item {
     company    Company? @relation(fields: [company_id], references: [id])
     company_id String?
 
+    @@fulltext([name])
+    @@fulltext([name, description])
     @@map("items")
 }
 
@@ -135,4 +143,56 @@ model Message {
     conversation_id String?
 
     @@map("messages")
+}
+
+model CompanyReport {
+    id String @id @default(cuid())
+
+    message String
+    images  ReportImage[]
+
+    denounced    Company @relation(fields: [denounced_id], references: [id])
+    denounced_id String
+
+    denouncer    User   @relation(fields: [denouncer_id], references: [id])
+    denouncer_id String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("companies_reports")
+}
+
+model UserReport {
+    id String @id @default(cuid())
+
+    message String
+    images  ReportImage[]
+
+    denounced    User   @relation(fields: [denounced_id], references: [id])
+    denounced_id String
+
+    denouncer    Company @relation(fields: [denouncer_id], references: [id])
+    denouncer_id String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("users_reports")
+}
+
+model ReportImage {
+    id        String @id @default(cuid())
+    image_url String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    companies_reports    CompanyReport? @relation(fields: [companies_reports_id], references: [id])
+    companies_reports_id String?
+
+    users_reports    UserReport? @relation(fields: [users_reports_id], references: [id])
+    users_reports_id String?
+
+    @@map("report_images")
 }
