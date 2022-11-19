@@ -10,6 +10,7 @@ import validateToken from "@/utils/validateToken"
 import { PaperAirplaneIcon, PhotoIcon } from "@heroicons/react/24/outline"
 import useChannel from "hooks/useChannel"
 import { GetServerSideProps } from "next"
+import Link from "next/link"
 import { parseCookies } from "nookies"
 import { FormEvent, useEffect, useState } from "react"
 
@@ -43,6 +44,7 @@ export default function Chat({
 	const [messageToSend, setMessageToSend] = useState("")
 	const [chatMessages, setChatMessages] = useState<MessageData[]>([])
 	const [channelName, setChannelName] = useState("")
+	const [otherId, setOtherId] = useState<string | undefined>("")
 
 	const channel = useChannel(channelName, (message) => {
 		setChatMessages([
@@ -112,6 +114,7 @@ export default function Chat({
 									}`}
 									key={index}
 									onClick={() => {
+										setOtherId(conversation.data.id)
 										setChannelName(conversation.id)
 									}}
 								>
@@ -132,6 +135,13 @@ export default function Chat({
 						</div>
 					</div>
 					<div className="hidden w-full flex-col md:flex">
+						{otherId && (
+							<Link href={`/report/${otherId}`}>
+								<a>
+									<button>Denunciar Empresa</button>
+								</a>
+							</Link>
+						)}
 						{channelName ? (
 							<div className="flex flex-1 flex-col-reverse overflow-y-auto p-4">
 								<div className="flex flex-col gap-y-2">
