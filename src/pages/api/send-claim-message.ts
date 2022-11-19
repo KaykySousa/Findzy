@@ -50,6 +50,8 @@ const handler: NextApiHandler = async (req, res) => {
 
 		const { toId, content } = req.body
 
+		if (!toId || !content) throw new CustomError("Missing parameters")
+
 		const message = await prisma.message.create({
 			data: {
 				content,
