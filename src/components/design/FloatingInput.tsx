@@ -1,6 +1,7 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
 import { ChangeEvent, useState } from "react"
 import InputMask, { Props as InputMaskProps } from "react-input-mask"
+import IconButton from "../IconButton"
 
 interface FloatingInputProps extends Omit<InputMaskProps, "mask"> {
 	togglePassword?: boolean
@@ -61,19 +62,15 @@ export default function FloatingInput({
 				{placeholder}
 			</label>
 			{togglePassword && (
-				<button
-					type="button"
-					className="absolute right-0 rounded-full p-1 text-gray-500 outline-purple-700 transition-colors hover:bg-neutral-200 peer-focus:text-purple-700"
-					onClick={() => {
-						setShowPassword(!showPassword)
-					}}
-				>
+				<IconButton onClick={() => {
+					setShowPassword(!showPassword)
+				}}>
 					{showPassword ? (
 						<EyeIcon className="h-5 w-5" />
 					) : (
 						<EyeSlashIcon className="h-5 w-5" />
 					)}
-				</button>
+				</IconButton>
 			)}
 		</div>
 	)
