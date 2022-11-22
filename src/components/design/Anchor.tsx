@@ -3,13 +3,21 @@ import { AnchorHTMLAttributes } from "react"
 
 interface AnchorProps
 	extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps>,
-		LinkProps {}
+		LinkProps {
+			theme?: "primary" | "second"
+		}
 
-export default function Anchor({ className, href, ...props }: AnchorProps) {
+export default function Anchor({ className, theme = "primary", href, ...props }: AnchorProps) {
+
+	const themes = {
+		primary: "hover:underline",
+		second: "text-sm text-slate-500 hover:text-purple-700"
+	}
+
 	return (
 		<Link href={href}>
 			<a
-				className={`text-sm text-slate-500 hover:text-purple-700 ${className}`}
+				className={`${themes[theme]} ${className}`}
 				{...props}
 			/>
 		</Link>
