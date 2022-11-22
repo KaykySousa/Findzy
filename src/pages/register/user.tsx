@@ -1,5 +1,5 @@
 import { Logo } from "@/components/index"
-import { Button, FloatingInput, LinkButton } from "@/design/index"
+import { Anchor, Button, FloatingInput, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { UserRegisterResponseData } from "@/types/api"
 import CustomError from "@/utils/CustomError"
@@ -79,7 +79,7 @@ export default function RegisterUser() {
 						onSubmit={handleSubmit}
 					>
 						<FloatingInput
-							placeholder="Nome"
+							placeholder="Nome completo"
 							required
 							value={name}
 							onChange={(e) => {
@@ -88,7 +88,7 @@ export default function RegisterUser() {
 						/>
 						<FloatingInput
 							type="date"
-							placeholder="Data de Nascimento"
+							placeholder="Data de nascimento"
 							min="1900-01-01"
 							max={dayjs()
 								.subtract(16, "years")
@@ -149,8 +149,8 @@ export default function RegisterUser() {
 				</div>
 			</div>
 
-			<div className="hidden w-2/5 flex-col items-center justify-center gap-y-12 bg-purple-700 p-12 lg:flex">
-				<p className="text-center text-3xl font-bold text-white">
+			<div className="hidden w-2/5 flex-col items-center justify-center bg-purple-700 p-12 lg:flex">
+				<p className="text-center text-3xl font-bold text-white mb-12">
 					Já possui uma conta no Findzy e caiu aqui por engano?
 				</p>
 				<LinkButton
