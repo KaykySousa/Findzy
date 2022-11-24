@@ -1,4 +1,11 @@
-import { ChevronDownIcon } from "@heroicons/react/24/outline"
+import { api } from "@/services/axios"
+import {
+	ChevronDownIcon,
+	PencilSquareIcon,
+	TrashIcon,
+} from "@heroicons/react/24/outline"
+import Link from "next/link"
+import { useRouter } from "next/router"
 import { useState } from "react"
 
 interface ItemCardProps {
@@ -10,6 +17,7 @@ interface ItemCardProps {
 	images: string[]
 	defaultShowDescription?: boolean
 	onClick?: () => void
+	editId?: string
 }
 
 export default function ItemCard({
@@ -21,15 +29,25 @@ export default function ItemCard({
 	images,
 	defaultShowDescription,
 	onClick,
+	editId,
 }: ItemCardProps) {
 	const [showDescription, setShowDescription] = useState(
 		defaultShowDescription || false
 	)
 	const [imageSliderIndex, setImageSliderIndex] = useState(0)
 
+	const router = useRouter()
+
+	async function deleteItem() {
+		await api.post("/api/delete-item", {
+			itemId: editId,
+		})
+		router.reload()
+	}
+
 	return (
 		<div
-			className={`w-full cursor-pointer rounded-lg border border-gray-100 ${className}`}
+			className={`relative w-full cursor-pointer rounded-lg border border-gray-100 ${className}`}
 			onClick={onClick}
 		>
 			<div className="relative h-64 w-full overflow-hidden">
@@ -91,6 +109,28 @@ export default function ItemCard({
 					{description}
 				</p>
 			</div>
+			{editId && (
+				<div
+					className="absolute top-0 right-0 flex rounded-tr-lg rounded-bl-lg bg-white"
+					onClick={(e) => {
+						e.stopPropagation()
+					}}
+				>
+					<button className="p-2" onClick={deleteItem}>
+						<TrashIcon className="h-6 w-6 text-purple-600" />
+					</button>
+					<Link href={`/company/update-item/${editId}`}>
+						<a
+							className="p-2"
+							onClick={(e) => {
+								e.stopPropagation()
+							}}
+						>
+							<PencilSquareIcon className="h-6 w-6 text-purple-700" />
+						</a>
+					</Link>
+				</div>
+			)}
 		</div>
 	)
 }
