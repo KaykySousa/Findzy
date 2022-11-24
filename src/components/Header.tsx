@@ -5,11 +5,14 @@ import {
 	ChatBubbleBottomCenterTextIcon as ChatIconOutline,
 	ChevronLeftIcon,
 	ChevronRightIcon,
-	Cog8ToothIcon,
+	Cog8ToothIcon as CogToothIconOutline,
 	MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline"
 
-import { ChatBubbleBottomCenterTextIcon as ChatIconSolid } from "@heroicons/react/24/solid"
+import {
+	ChatBubbleBottomCenterTextIcon as ChatIconSolid,
+	Cog8ToothIcon as CogToothIconSolid,
+} from "@heroicons/react/24/solid"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -118,7 +121,15 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 							)}
 						</a>
 					</Link>
-					<Cog8ToothIcon className="h-6 w-6 text-purple-700" />
+					<Link href="/settings">
+						<a>
+							{urlPathname.indexOf("/settings") !== -1 ? (
+								<CogToothIconSolid className="h-6 w-6 text-purple-700" />
+							) : (
+								<CogToothIconOutline className="h-6 w-6 text-purple-700" />
+							)}
+						</a>
+					</Link>
 				</div>
 			</header>
 
@@ -261,17 +272,53 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 									<p className="mb-4 font-bold uppercase text-purple-700">
 										ITENS
 									</p>
-									<div className="flex w-full flex-col items-center justify-between">
-										{itemsFound.map((item, index) => (
-											<ItemCard
-												key={index}
-												color={item.color}
-												description={item.description}
-												images={item.images}
-												local={item.local}
-												title={item.name}
-											/>
-										))}
+									<div className="flex w-full flex-col items-center justify-between gap-x-4 md:flex-row">
+										<ChevronLeftIcon
+											className="hidden h-8 w-8 cursor-pointer text-purple-700 md:block"
+											onClick={() => {
+												if (companySliderIndex > 0) {
+													setCompanySliderIndex(
+														companySliderIndex - 1
+													)
+												}
+											}}
+										/>
+										<div className="w-full overflow-x-hidden">
+											<div
+												className="flex w-full gap-x-4 transition-transform"
+												style={{
+													transform: `translate(-${
+														companySliderIndex * 100
+													}%)`,
+												}}
+											>
+												{itemsFound.map(
+													(item, index) => (
+														<ItemCard
+															key={index}
+															color={item.color}
+															description={
+																item.description
+															}
+															images={item.images}
+															local={item.local}
+															title={item.name}
+															className="md:w-72"
+														/>
+													)
+												)}
+											</div>
+										</div>
+										<ChevronRightIcon
+											className="hidden h-8 w-8 cursor-pointer text-purple-700 md:block"
+											onClick={() => {
+												if (companySliderIndex < 1) {
+													setCompanySliderIndex(
+														companySliderIndex + 1
+													)
+												}
+											}}
+										/>
 									</div>
 								</div>
 							)}
