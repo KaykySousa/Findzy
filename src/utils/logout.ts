@@ -1,4 +1,5 @@
 import { NextApiResponse, NextPageContext } from "next"
+import Router from "next/router"
 import { destroyCookie } from "nookies"
 
 type Logout = (
@@ -9,6 +10,7 @@ const logout: Logout = (ctx) => {
 	destroyCookie(ctx, "findzy.token", {
 		path: "/",
 	})
+	Router.push("/")
 }
 
 export default logout
