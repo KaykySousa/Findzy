@@ -62,7 +62,7 @@ export default function FloatingInput({
 				{placeholder}
 			</label>
 			{togglePassword && (
-				<IconButton onClick={() => {
+				<IconButton className="absolute right-0" onClick={() => {
 					setShowPassword(!showPassword)
 				}}>
 					{showPassword ? (
