@@ -87,6 +87,7 @@ model Item {
     local       String
     description String
     images      ItemImage[]
+    category    String
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
