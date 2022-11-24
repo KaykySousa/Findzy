@@ -19,8 +19,6 @@ const handler: NextApiHandler = async (req, res) => {
 			})
 		}
 
-		let imagesUrl: ImagesUrlData[] = []
-
 		const { itemId }: BodyData = req.body
 
 		if (!itemId) {
@@ -30,12 +28,6 @@ const handler: NextApiHandler = async (req, res) => {
 		const deletedItem = await prisma.item.delete({
 			where: {
 				id: itemId,
-			},
-			select: {
-				category: true,
-				color: true,
-				description: true,
-				id: true,
 			},
 		})
 
