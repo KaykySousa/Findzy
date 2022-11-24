@@ -29,11 +29,11 @@ export default function Select({
 				</label>
 			)}
 			<select
-				className={`h-10 w-full cursor-text rounded border-0 bg-gray-100 focus:ring-purple-700 ${inputClassName} ${
+				className={`h-10 w-full cursor-text rounded-3xl border-0 bg-gray-100 focus:ring-purple-700 ${inputClassName} ${
 					isDefault ? "text-sm text-gray-500" : ""
 				}`}
 				onChange={(e) => {
-					if (e.target.value === "defaultOption") {
+					if (e.target.value === "") {
 						setIsDefault(true)
 					} else {
 						setIsDefault(false)
@@ -42,11 +42,11 @@ export default function Select({
 						onChange(e)
 					}
 				}}
-				value={value || "defaultOption"}
+				value={value}
 				{...props}
 			>
 				{defaultOption && (
-					<option value={"defaultOption"} hidden disabled>
+					<option value={""} hidden disabled>
 						{defaultOption}
 					</option>
 				)}
