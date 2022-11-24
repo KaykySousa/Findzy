@@ -101,6 +101,7 @@ export default function MainCompany({
 								setViewItem(item)
 								setViewItemImageSliderIndex(0)
 							}}
+							editId={item.id}
 						/>
 					))}
 				</div>
