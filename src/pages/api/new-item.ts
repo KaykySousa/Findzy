@@ -66,6 +66,7 @@ const handler: NextApiHandler = async (req, res) => {
 
 		const item = await prisma.item.create({
 			data: {
+				category,
 				color,
 				description,
 				local,
