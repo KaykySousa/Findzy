@@ -1,6 +1,7 @@
 import { Button, Input, Select } from "@/components/design"
 import ImageCard from "@/components/ImageCard"
 import { Header, ImageUpload, ItemCard } from "@/components/index"
+import SEO from "@/components/SEO"
 import { api } from "@/services/axios"
 import withAuth from "@/utils/withAuth"
 import {
@@ -66,6 +67,10 @@ export default function NewItem({ company }: NewItemProps) {
 
 	return (
 		<div className="flex min-h-screen w-full flex-col items-center">
+			<SEO
+				description="Cadastre um novo item no Findzy"
+				title="Novo item"
+			/>
 			<Header showInput={false} className="hidden md:flex" />
 			<div className="flex w-full max-w-2xl flex-1 flex-col rounded-md border-gray-100 p-5 md:my-5 md:border md:py-4">
 				<div className="relative flex w-full items-center justify-center">

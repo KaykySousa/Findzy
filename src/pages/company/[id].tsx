@@ -1,6 +1,7 @@
 import { Button, LinkButton } from "@/components/design"
 import TextArea from "@/components/design/TextArea"
 import { CompanyBanner, Header, ItemCard } from "@/components/index"
+import SEO from "@/components/SEO"
 import { api } from "@/services/axios"
 import getCompany from "@/utils/getCompany"
 import getItems from "@/utils/getItems"

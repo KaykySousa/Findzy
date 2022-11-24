@@ -1,4 +1,5 @@
 import { Logo } from "@/components/index"
+import SEO from "@/components/SEO"
 import { Anchor, Button, FloatingInput, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { UserRegisterResponseData } from "@/types/api"
@@ -61,6 +62,10 @@ export default function RegisterUser() {
 	return (
 		<div className="flex min-h-screen w-full">
 			<div className="flex flex-1 flex-col items-center p-5 md:justify-center lg:p-10">
+				<SEO
+				description="Cadastre-se e encontre seu objeto com uma facilidade nunca antes vista."
+				title="Cadastre-se no Findzy" 
+				/>
 				<Logo className="mb-4 hidden self-start !text-xl lg:block" />
 				<div className="flex w-full max-w-xl flex-1 flex-col items-center md:justify-center">
 					<span className="mb-4 text-lg font-bold text-purple-700 md:text-3xl lg:hidden">
@@ -71,7 +76,7 @@ export default function RegisterUser() {
 					</span>
 					<p className="mb-12 text-center text-purple-700">
 						Cadastre-se e encontre seu objeto com uma facilidade
-						nunca antes vista
+						nunca antes vista.
 					</p>
 					<form
 						id="user-register-form"

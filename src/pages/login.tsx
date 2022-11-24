@@ -64,7 +64,7 @@ export default function Login() {
 							Primeira vez?
 						</p>
 						<p className="text-center text-lg text-white">
-							Conheça a nossa plataforma de achados e perdidos
+							Conheça a nossa plataforma de achados e perdidos.
 						</p>
 						<LinkButton href="/register/user" theme="secondary">
 							Cadastre-se
@@ -88,7 +88,7 @@ export default function Login() {
 					</span>
 					<p className="mb-12 text-center text-purple-700">
 						Ingresse no Findzy e encontre facilmente seu objeto
-						desaparecido
+						desaparecido.
 					</p>
 					<form
 						id="login-form"

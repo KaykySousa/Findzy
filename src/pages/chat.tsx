@@ -1,6 +1,7 @@
 import ChatMessage from "@/components/ChatMessage"
 import { Input } from "@/components/design"
 import Header from "@/components/Header"
+import SEO from "@/components/SEO"
 import { api } from "@/services/axios"
 import { MessagesResponseData } from "@/types/api"
 import getCompany from "@/utils/getCompany"
@@ -97,6 +98,10 @@ export default function Chat({
 
 	return (
 		<div className="flex min-h-screen w-full flex-col items-center">
+			<SEO
+				description=""
+				title="Chat"
+			/>
 			<Header className="hidden md:flex" />
 			<div className="flex w-full flex-1 items-center justify-center">
 				<div className="flex h-[calc(100vh-3.5rem-3rem)] w-full max-w-5xl items-stretch rounded-md border-gray-100 md:border">

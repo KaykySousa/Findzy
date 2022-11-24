@@ -3,6 +3,7 @@ import TextArea from "@/components/design/TextArea"
 import Header from "@/components/Header"
 import ImageCard from "@/components/ImageCard"
 import ImageUpload from "@/components/ImageUpload"
+import SEO from "@/components/SEO"
 import { api } from "@/services/axios"
 import getCompany from "@/utils/getCompany"
 import getUser from "@/utils/getUser"
@@ -61,6 +62,10 @@ export default function Report({ accountToReport, accountType }: ReportProps) {
 
 	return (
 		<div className="flex min-h-screen w-full flex-col items-center">
+			<SEO
+				description=""
+				title={accountToReport.name}
+			/>
 			<Header showInput={false} className="hidden md:flex" />
 			<div className="flex w-full max-w-2xl flex-1 flex-col rounded-md border-gray-100 p-5 md:my-5 md:border md:py-4">
 				<div className="relative flex w-full items-center justify-center">

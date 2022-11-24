@@ -1,5 +1,6 @@
 import CompanyCard from "@/components/CompanyCard"
 import { Header } from "@/components/index"
+import SEO from "@/components/SEO"
 import prisma from "@/prisma/client"
 import withAuth from "@/utils/withAuth"
 import { Address } from "@prisma/client"
@@ -23,6 +24,10 @@ export default function MainUser({ companies }: MainUserProps) {
 
 	return (
 		<div className="min-h-screen w-full bg-white">
+			<SEO
+			title="Início"
+			description="Página inicial." 
+			/>
 			<Header />
 			<div className="flex w-full flex-col items-center gap-y-2 p-2 md:p-0 md:py-4">
 				{companies.map((company, index) => (
@@ -70,8 +75,6 @@ export const getServerSideProps = withAuth(
 				},
 			},
 		})
-
-		console.log(companies[0]._count.companies_reports)
 
 		return {
 			props: {

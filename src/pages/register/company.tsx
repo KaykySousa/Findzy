@@ -1,5 +1,6 @@
 import ImageUpload from "@/components/ImageUpload"
 import { Logo } from "@/components/index"
+import SEO from "@/components/SEO"
 import { Anchor, Button, FloatingInput, LinkButton } from "@/design/index"
 import { api } from "@/services/axios"
 import { CompanyRegisterResponseData } from "@/types/api"
@@ -101,6 +102,10 @@ export default function RegisterUser() {
 
 	return (
 		<div className="flex min-h-screen w-full">
+			<SEO
+				description="Cadastre seu estabelecimento agora no Findzy."
+				title="Cadastrar estabelecimento"
+			/>
 			<div className="flex flex-1 flex-col items-center p-5 md:justify-center lg:p-10">
 				<Logo className="mb-4 hidden self-start !text-xl lg:block" />
 				<div className="flex w-full max-w-xl flex-1 flex-col items-center md:justify-center">
@@ -112,7 +117,7 @@ export default function RegisterUser() {
 					</span>
 					<p className="mb-12 text-center text-purple-700">
 						Cadastre sua empresa e ajude a sua comunidade e clientes
-						a encontrarem seus objetos perdidos
+						a encontrarem seus objetos perdidos.
 					</p>
 					<form
 						id="user-register-form"
@@ -256,7 +261,7 @@ export default function RegisterUser() {
 				<ImageUpload
 					title="Também precisamos do logotipo do seu estabelecimento"
 					dropMessage="Arraste seu logo aqui"
-					buttonTitle="Iniciar Solicitação"
+					buttonTitle="Iniciar solicitação"
 					loading={loading}
 					onUploadButton={handleSubmit}
 				/>

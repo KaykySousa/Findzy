@@ -10,7 +10,7 @@ export default function Error404() {
 			<div className="flex w-full max-w-lg flex-1 flex-col items-center justify-center gap-y-6">
 				<h1 className="text-6xl font-bold text-purple-700">404</h1>
 				<p className="text-center text-3xl">
-					<strong>Poxa...</strong> Aqui não tem nada!
+					Poxa... Aqui não tem nada!
 				</p>
 				<LinkButton href="/">Voltar ao início</LinkButton>
 			</div>
