@@ -91,7 +91,7 @@ export default function withAuth(
 		return {
 			redirect: {
 				permanent: false,
-				destination: "/login",
+				destination: "/",
 			},
 		}
 	}
