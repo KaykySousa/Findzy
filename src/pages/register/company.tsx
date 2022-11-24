@@ -172,6 +172,7 @@ export default function RegisterUser() {
 								href="https://buscacepinter.correios.com.br/app/endereco/index.php"
 								target="_blank"
 								rel="noopener noreferrer"
+								theme="second"
 							>
 								Não sabe o seu CEP?
 							</Anchor>
