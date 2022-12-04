@@ -3,7 +3,11 @@ import Router from "next/router"
 import { destroyCookie } from "nookies"
 
 type Logout = (
-	ctx?: Pick<NextPageContext, "res"> | { res: NextApiResponse } | null
+	ctx?:
+		| Pick<NextPageContext, "res">
+		| { res: NextApiResponse }
+		| null
+		| undefined
 ) => void
 
 const logout: Logout = (ctx) => {
