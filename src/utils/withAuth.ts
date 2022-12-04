@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
 import { parseCookies } from "nookies"
 import getAdmin from "./getAdmin"
-import getCompany from "./getCompany"
-import getUser from "./getUser"
+import getCompanyById from "./getCompanyById"
+import getUserById from "./getUserById"
 import validateToken from "./validateToken"
 
 type gsspType = (data: {
@@ -33,7 +33,7 @@ export default function withAuth(
 			decodedToken.accountType === "user" &&
 			accountTypeAllowed.indexOf("user") !== -1
 		) {
-			const userData = await getUser(decodedToken.sub!)
+			const userData = await getUserById(decodedToken.sub!)
 
 			if (!userData)
 				return {
@@ -50,13 +50,37 @@ export default function withAuth(
 			decodedToken.accountType === "company" &&
 			accountTypeAllowed.indexOf("company") !== -1
 		) {
-			const companyData = await getCompany(decodedToken.sub!)
+			const companyData = await getCompanyById(decodedToken.sub!)
 
 			if (!companyData)
 				return {
 					redirect: {
 						permanent: false,
 						destination: "/login",
+					},
+				}
+
+			if (companyData.status === "review")
+				return {
+					redirect: {
+						permanent: false,
+						destination: "/company/review",
+					},
+				}
+
+			if (companyData.status === "invalid")
+				return {
+					redirect: {
+						permanent: false,
+						destination: "/company/invalid",
+					},
+				}
+
+			if (companyData.status === "banned")
+				return {
+					redirect: {
+						permanent: false,
+						destination: "/company/banned",
 					},
 				}
 
@@ -88,10 +112,40 @@ export default function withAuth(
 			})
 		}
 
+		const userData = await getUserById(decodedToken.sub!)
+
+		if (userData)
+			return {
+				redirect: {
+					permanent: false,
+					destination: "/",
+				},
+			}
+
+		const companyData = await getCompanyById(decodedToken.sub!)
+
+		if (companyData)
+			return {
+				redirect: {
+					permanent: false,
+					destination: `/company/${companyData.id}`,
+				},
+			}
+
+		const adminData = await getAdmin(decodedToken.sub!)
+
+		if (adminData)
+			return {
+				redirect: {
+					permanent: false,
+					destination: `/admin`,
+				},
+			}
+
 		return {
 			redirect: {
 				permanent: false,
-				destination: "/",
+				destination: "/login",
 			},
 		}
 	}
