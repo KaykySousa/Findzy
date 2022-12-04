@@ -1,13 +1,18 @@
 interface ChatMessageProps {
 	sender: "me" | "other"
 	message: string
+	timestamp: string
 }
 
-export default function ChatMessage({ sender, message }: ChatMessageProps) {
+export default function ChatMessage({
+	sender,
+	message,
+	timestamp,
+}: ChatMessageProps) {
 	return (
 		<div
-			className={`flex w-full ${
-				sender === "other" ? "justify-start" : "justify-end"
+			className={`flex w-full flex-col ${
+				sender === "other" ? "items-start" : "items-end"
 			}`}
 		>
 			<div
@@ -19,6 +24,7 @@ export default function ChatMessage({ sender, message }: ChatMessageProps) {
 			>
 				<p>{message}</p>
 			</div>
+			<span className="mt-1 text-sm text-gray-300">{timestamp}</span>
 		</div>
 	)
 }
