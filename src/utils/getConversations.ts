@@ -28,6 +28,16 @@ export default async function getConversations(id: string) {
 						name: true,
 					},
 				},
+				messages: {
+					orderBy: {
+						created_at: "desc",
+					},
+					take: 1,
+					select: {
+						content: true,
+						created_at: true,
+					},
+				},
 			},
 		})
 
