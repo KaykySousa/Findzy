@@ -16,12 +16,16 @@ model User {
     password  String
     birthdate DateTime @db.Date
 
+    status String @default("valid")
+
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    conversations     Conversation[]
-    companies_reports CompanyReport[]
-    users_reports     UserReport[]
+    conversations       Conversation[]
+    companies_reports   CompanyReport[]
+    users_reports       UserReport[]
+    users_notifications UserNotification[]
+    BannedUser          BannedUser[]
 
     @@map("users")
 }
@@ -41,10 +45,12 @@ model Company {
 
     address Address?
 
-    conversations     Conversation[]
-    items             Item[]
-    companies_reports CompanyReport[]
-    users_reports     UserReport[]
+    conversations       Conversation[]
+    items               Item[]
+    companies_reports   CompanyReport[]
+    users_reports       UserReport[]
+    CompanyNotification CompanyNotification[]
+    BannedCompany       BannedCompany[]
 
     @@fulltext([name])
     @@map("companies")
@@ -196,4 +202,60 @@ model ReportImage {
     users_reports_id String?
 
     @@map("report_images")
+}
+
+model UserNotification {
+    id String @id @default(cuid())
+
+    content String
+
+    user    User   @relation(fields: [user_id], references: [id])
+    user_id String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("users_notifications")
+}
+
+model CompanyNotification {
+    id String @id @default(cuid())
+
+    content String
+
+    company    Company @relation(fields: [company_id], references: [id])
+    company_id String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("companies_notifications")
+}
+
+model BannedUser {
+    id String @id @default(cuid())
+
+    reason String
+
+    user    User   @relation(fields: [user_id], references: [id])
+    user_id String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("banned_users")
+}
+
+model BannedCompany {
+    id String @id @default(cuid())
+
+    reason String
+
+    company    Company @relation(fields: [company_id], references: [id])
+    company_id String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("banned_companies")
 }
