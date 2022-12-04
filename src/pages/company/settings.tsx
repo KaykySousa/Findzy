@@ -28,10 +28,7 @@ export default function SettingsPage({ companyData }: SettingsPageProps) {
 
 	return (
 		<div className="flex min-h-screen w-full flex-col items-center">
-			<SEO
-				description="Configure sua página"
-				title="Configurações"
-			/>
+			<SEO description="Configure sua página" title="Configurações" />
 			<Header showInput={false} className="hidden md:flex" />
 			<div className="flex w-full max-w-2xl flex-1 flex-col rounded-md border-gray-100 p-5 md:my-5 md:border md:py-4">
 				<div className="relative flex w-full items-center justify-center">
@@ -40,9 +37,9 @@ export default function SettingsPage({ companyData }: SettingsPageProps) {
 					</h1>
 
 					<Link href="/">
-						<a className="absolute right-0">
+						<div className="absolute right-0">
 							<XMarkIcon className=" h-6 w-6 text-red-600" />
-						</a>
+						</div>
 					</Link>
 				</div>
 

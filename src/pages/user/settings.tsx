@@ -37,9 +37,9 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
 					</h1>
 
 					<Link href="/">
-						<a className="absolute right-0">
+						<div className="absolute right-0">
 							<XMarkIcon className=" h-6 w-6 text-red-600" />
-						</a>
+						</div>
 					</Link>
 				</div>
 

@@ -35,9 +35,7 @@ export default function CompanyBanner({
 					<p className="mt-1 text-sm text-gray-700">{address}</p>
 				</div>
 				<Link href={`/report/${companyId}`}>
-					<a>
-						<FlagIcon className="h-6 w-6 cursor-pointer text-purple-700" />
-					</a>
+					<FlagIcon className="h-6 w-6 cursor-pointer text-purple-700" />
 				</Link>
 			</div>
 		</div>

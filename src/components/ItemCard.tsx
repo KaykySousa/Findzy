@@ -120,14 +120,14 @@ export default function ItemCard({
 						<TrashIcon className="h-6 w-6 text-purple-600" />
 					</button>
 					<Link href={`/company/update-item/${editId}`}>
-						<a
+						<div
 							className="p-2"
 							onClick={(e) => {
 								e.stopPropagation()
 							}}
 						>
 							<PencilSquareIcon className="h-6 w-6 text-purple-700" />
-						</a>
+						</div>
 					</Link>
 				</div>
 			)}
