@@ -2,6 +2,7 @@ import { ItemCard, Logo } from "@/components/index"
 import { Input } from "@/design/index"
 import { api } from "@/services/axios"
 import {
+	BellIcon as BellIconOutline,
 	ChatBubbleBottomCenterTextIcon as ChatIconOutline,
 	ChevronLeftIcon,
 	ChevronRightIcon,
@@ -10,6 +11,7 @@ import {
 } from "@heroicons/react/24/outline"
 
 import {
+	BellIcon as BellIconSolid,
 	ChatBubbleBottomCenterTextIcon as ChatIconSolid,
 	Cog8ToothIcon as CogToothIconSolid,
 } from "@heroicons/react/24/solid"
@@ -112,23 +114,26 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 					/>
 				)}
 				<div className="flex gap-x-4">
+					<Link href="/notifications">
+						{urlPathname.indexOf("/notifications") !== -1 ? (
+							<BellIconSolid className="h-6 w-6 text-purple-700" />
+						) : (
+							<BellIconOutline className="h-6 w-6 text-purple-700" />
+						)}
+					</Link>
 					<Link href="/chat">
-						<a>
-							{urlPathname === "/chat" ? (
-								<ChatIconSolid className="h-6 w-6 text-purple-700" />
-							) : (
-								<ChatIconOutline className="h-6 w-6 text-purple-700" />
-							)}
-						</a>
+						{urlPathname === "/chat" ? (
+							<ChatIconSolid className="h-6 w-6 text-purple-700" />
+						) : (
+							<ChatIconOutline className="h-6 w-6 text-purple-700" />
+						)}
 					</Link>
 					<Link href="/settings">
-						<a>
-							{urlPathname.indexOf("/settings") !== -1 ? (
-								<CogToothIconSolid className="h-6 w-6 text-purple-700" />
-							) : (
-								<CogToothIconOutline className="h-6 w-6 text-purple-700" />
-							)}
-						</a>
+						{urlPathname.indexOf("/settings") !== -1 ? (
+							<CogToothIconSolid className="h-6 w-6 text-purple-700" />
+						) : (
+							<CogToothIconOutline className="h-6 w-6 text-purple-700" />
+						)}
 					</Link>
 				</div>
 			</header>
@@ -226,29 +231,27 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 															key={index}
 															href={`/company/${company.id}`}
 														>
-															<a>
-																<div
-																	className="flex w-28 flex-shrink-0 cursor-pointer flex-col items-center justify-center"
-																	onClick={() => {
-																		setShowSearch(
-																			false
-																		)
-																	}}
-																>
-																	<img
-																		className="mb-2 h-20 w-20 rounded-full border border-gray-300"
-																		src={
-																			company.profile_picture_url
-																		}
-																		alt=""
-																	/>
-																	<p className="text-center text-sm font-bold text-gray-800">
-																		{
-																			company.name
-																		}
-																	</p>
-																</div>
-															</a>
+															<div
+																className="flex w-28 flex-shrink-0 cursor-pointer flex-col items-center justify-center"
+																onClick={() => {
+																	setShowSearch(
+																		false
+																	)
+																}}
+															>
+																<img
+																	className="mb-2 h-20 w-20 rounded-full border border-gray-300"
+																	src={
+																		company.profile_picture_url
+																	}
+																	alt=""
+																/>
+																<p className="text-center text-sm font-bold text-gray-800">
+																	{
+																		company.name
+																	}
+																</p>
+															</div>
 														</Link>
 													)
 												)}
