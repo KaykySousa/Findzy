@@ -1,9 +1,8 @@
 import { Button, LinkButton } from "@/components/design"
 import TextArea from "@/components/design/TextArea"
 import { CompanyBanner, Header, ItemCard } from "@/components/index"
-import SEO from "@/components/SEO"
 import { api } from "@/services/axios"
-import getCompany from "@/utils/getCompany"
+import getCompanyById from "@/utils/getCompanyById"
 import getItems from "@/utils/getItems"
 import withAuth from "@/utils/withAuth"
 import {
@@ -110,13 +109,13 @@ export default function MainCompany({
 
 			{viewItem && (
 				<div
-					className="fixed top-0 left-0 flex h-screen w-full items-center justify-center gap-x-8 bg-black bg-opacity-70 p-4 backdrop-blur-[2px]"
+					className="absolute top-0 left-0 flex min-h-screen w-full flex-col items-center justify-center gap-x-8 bg-black bg-opacity-70 p-4 backdrop-blur-[2px] md:fixed md:h-screen md:flex-row"
 					onClick={() => {
 						setViewItem(null)
 					}}
 				>
 					<div
-						className="flex h-full max-h-[28rem] w-full max-w-lg flex-col items-stretch rounded-lg bg-white"
+						className="mb-4 flex h-[28rem] w-full max-w-lg flex-col items-stretch rounded-lg bg-white md:mb-0 md:h-full md:max-h-[28rem]"
 						onClick={(e) => {
 							e.stopPropagation()
 						}}
@@ -188,7 +187,7 @@ export default function MainCompany({
 					</div>
 					{!canEdit && (
 						<form
-							className="flex h-full max-h-[28rem] w-full max-w-lg flex-col items-center rounded-lg bg-white p-6"
+							className="flex h-[28rem] w-full max-w-lg flex-col items-center rounded-lg bg-white p-6 md:h-full md:max-h-[28rem]"
 							onClick={(e) => {
 								e.stopPropagation()
 							}}
@@ -233,7 +232,7 @@ export default function MainCompany({
 export const getServerSideProps = withAuth(
 	["user", "company"],
 	async ({ context, data, accountType }) => {
-		const company = await getCompany(context.query.id!.toString())
+		const company = await getCompanyById(context.query.id!.toString())
 
 		if (!company) {
 			return {
