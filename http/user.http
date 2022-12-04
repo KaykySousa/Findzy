@@ -17,3 +17,11 @@ Content-Type: application/json
 	"email": "your@email.com",
 	"password": "your password"
 }
+
+### CREATE ITEM
+POST http://localhost:3000/api/item
+Content-Type: application/json
+
+{
+	"name": "teste"
+}
