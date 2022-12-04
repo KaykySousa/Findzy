@@ -1,5 +1,5 @@
-import getCompany from "@/utils/getCompany"
-import getUser from "@/utils/getUser"
+import getCompanyById from "@/utils/getCompanyById"
+import getUserById from "@/utils/getUserById"
 import validateToken from "@/utils/validateToken"
 import { GetServerSideProps } from "next"
 import { parseCookies } from "nookies"
@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		}
 	}
 
-	const userData = await getUser(decodedToken.sub!)
+	const userData = await getUserById(decodedToken.sub!)
 
 	if (userData)
 		return {
@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			},
 		}
 
-	const companyData = await getCompany(decodedToken.sub!)
+	const companyData = await getCompanyById(decodedToken.sub!)
 
 	if (companyData)
 		return {

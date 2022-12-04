@@ -1,7 +1,7 @@
 import prisma from "@/prisma/client"
 import CustomError from "@/utils/CustomError"
-import getCompany from "@/utils/getCompany"
-import getUser from "@/utils/getUser"
+import getCompanyById from "@/utils/getCompanyById"
+import getUserById from "@/utils/getUserById"
 import handleError from "@/utils/handleError"
 import validateToken from "@/utils/validateToken"
 import { NextApiHandler } from "next"
@@ -25,7 +25,7 @@ const handler: NextApiHandler = async (req, res) => {
 		}
 
 		if (decodedToken.accountType === "user") {
-			const user = await getUser(decodedToken.sub!)
+			const user = await getUserById(decodedToken.sub!)
 
 			if (!user) {
 				throw new CustomError("Unauthorized", {
@@ -37,7 +37,7 @@ const handler: NextApiHandler = async (req, res) => {
 		}
 
 		if (decodedToken.accountType === "company") {
-			const company = await getCompany(decodedToken.sub!)
+			const company = await getCompanyById(decodedToken.sub!)
 
 			if (!company) {
 				throw new CustomError("Unauthorized", {

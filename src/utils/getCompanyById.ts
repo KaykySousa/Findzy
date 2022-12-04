@@ -1,14 +1,15 @@
 import prisma from "@/prisma/client"
 import CustomError from "@/utils/CustomError"
+import { Company, Prisma } from "@prisma/client"
 
-export default async function getCompany(id: string) {
+export default async function getCompanyById(
+	id: string,
+	select?: Prisma.CompanySelect
+) {
 	try {
 		const company = await prisma.company.findUnique({
 			where: { id },
-			select: {
-				id: true,
-				name: true,
-				email: true,
+			select: select || {
 				address: {
 					select: {
 						cep: true,
@@ -20,14 +21,19 @@ export default async function getCompany(id: string) {
 						uf: true,
 					},
 				},
-				profile_picture_url: true,
+				cnpj: true,
+				email: true,
+				id: true,
+				name: true,
 				phone: true,
+				profile_picture_url: true,
+				status: true,
 			},
 		})
 
 		if (!company) throw new CustomError("Company not found")
 
-		return company
+		return company as Company
 	} catch (error) {
 		return undefined
 	}

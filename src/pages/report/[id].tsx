@@ -5,8 +5,8 @@ import ImageCard from "@/components/ImageCard"
 import ImageUpload from "@/components/ImageUpload"
 import SEO from "@/components/SEO"
 import { api } from "@/services/axios"
-import getCompany from "@/utils/getCompany"
-import getUser from "@/utils/getUser"
+import getCompanyById from "@/utils/getCompanyById"
+import getUserById from "@/utils/getUserById"
 import withAuth from "@/utils/withAuth"
 import {
 	ExclamationTriangleIcon,
@@ -50,6 +50,20 @@ export default function Report({ accountToReport, accountType }: ReportProps) {
 
 				router.push("/")
 			}
+
+			if (accountType === "company") {
+				const userReport = await api.post("/api/report-user", {
+					message: reportMessage,
+					images: reportImages,
+					denouncedId: accountToReport.id,
+				})
+
+				toast.success(
+					`Usuário ${userReport.data.report.denounced.name} denunciado com êxito`
+				)
+
+				router.push("/")
+			}
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const error = (err.response?.data as any).error
@@ -62,10 +76,7 @@ export default function Report({ accountToReport, accountType }: ReportProps) {
 
 	return (
 		<div className="flex min-h-screen w-full flex-col items-center">
-			<SEO
-				description=""
-				title={accountToReport.name}
-			/>
+			<SEO description="" title={accountToReport.name} />
 			<Header showInput={false} className="hidden md:flex" />
 			<div className="flex w-full max-w-2xl flex-1 flex-col rounded-md border-gray-100 p-5 md:my-5 md:border md:py-4">
 				<div className="relative flex w-full items-center justify-center">
@@ -74,9 +85,9 @@ export default function Report({ accountToReport, accountType }: ReportProps) {
 					</h1>
 
 					<Link href="/">
-						<a className="absolute right-0">
+						<div className="absolute right-0">
 							<XMarkIcon className=" h-6 w-6 text-red-600" />
-						</a>
+						</div>
 					</Link>
 				</div>
 
@@ -174,7 +185,7 @@ export const getServerSideProps = withAuth(
 	["user", "company"],
 	async ({ context, accountType }) => {
 		if (accountType === "user") {
-			const companyToReport = await getCompany(
+			const companyToReport = await getCompanyById(
 				context.query.id!.toString()
 			)
 
@@ -196,7 +207,14 @@ export const getServerSideProps = withAuth(
 		}
 
 		if (accountType === "company") {
-			const userToReport = await getUser(context.query.id!.toString())
+			const userToReport = await getUserById(
+				context.query.id!.toString(),
+				{
+					email: true,
+					id: true,
+					name: true,
+				}
+			)
 
 			if (!userToReport) {
 				return {

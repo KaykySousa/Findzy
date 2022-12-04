@@ -1,6 +1,6 @@
 import prisma from "@/prisma/client"
 import CustomError from "@/utils/CustomError"
-import getUser from "@/utils/getUser"
+import getUserById from "@/utils/getUserById"
 import handleError from "@/utils/handleError"
 import imageUploader from "@/utils/imageUploader"
 import validateToken from "@/utils/validateToken"
@@ -32,7 +32,7 @@ const handler: NextApiHandler = async (req, res) => {
 			throw new CustomError("Token not provided")
 		}
 
-		const user = await getUser(decodedToken.sub!)
+		const user = await getUserById(decodedToken.sub!)
 
 		if (!user) {
 			throw new CustomError("Unauthorized", {
