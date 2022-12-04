@@ -29,5 +29,6 @@ export interface MessagesResponseData {
 	messages: {
 		content: string
 		sender_id: string
+		created_at: Date
 	}[]
 }
