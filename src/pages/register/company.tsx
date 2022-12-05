@@ -41,7 +41,7 @@ export default function RegisterUser() {
 				{}
 			)
 
-			if (address.erro) throw new CustomError("CPF Inválido")
+			if (address.erro) throw new CustomError("CEP Inválido")
 
 			setAddress({
 				district: address.bairro,
