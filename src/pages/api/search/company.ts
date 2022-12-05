@@ -20,6 +20,7 @@ const handler: NextApiHandler = async (req, res) => {
 				name: {
 					contains: searchName,
 				},
+				status: "valid",
 			},
 			select: {
 				id: true,
