@@ -157,7 +157,7 @@ export default function NewItem({ company }: NewItemProps) {
 							/>
 							<Input
 								textLabel="Local onde foi encontrado"
-								placeholder="Ex.: Metrô Arthur Alvim"
+								placeholder="Ex.: Sala 10"
 								value={local}
 								onChange={(e) => {
 									setLocal(e.target.value)
@@ -166,7 +166,7 @@ export default function NewItem({ company }: NewItemProps) {
 							/>
 							<Input
 								textLabel="Descrição"
-								placeholder="Ex.: O item foi encontrado ontem à tarde, próximo a bilheteria"
+								placeholder="Ex.: O item foi encontrado no dia 07/12/2022 na sala 10, embaixo de uma carteira."
 								value={description}
 								onChange={(e) => {
 									setDescription(e.target.value)
