@@ -22,7 +22,10 @@ export default function UserNotifications({
 			{notifications.length > 0 ? (
 				<div className="flex w-full flex-col items-center gap-y-2 p-2 md:p-0 md:py-4">
 					{notifications.map((notification, index) => (
-						<div className="w-full max-w-3xl rounded-md border border-gray-300 p-4">
+						<div
+							className="w-full max-w-3xl rounded-md border border-gray-300 p-4"
+							key={index}
+						>
 							{notification.content}
 						</div>
 					))}
