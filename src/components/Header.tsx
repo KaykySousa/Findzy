@@ -17,8 +17,9 @@ import {
 } from "@heroicons/react/24/solid"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import ClaimItemModal from "./ClaimItemModal"
 
 interface HeaderProps {
 	showInput?: boolean
@@ -38,6 +39,20 @@ interface ItemsFoundData {
 	color: string
 	description: string
 	local: string
+	company: {
+		id: string
+		email: string
+		phone: string
+	}
+}
+
+interface ItemData {
+	images: string[]
+	id: string
+	name: string
+	color: string
+	local: string
+	description: string
 }
 
 export default function Header({ showInput = true, className }: HeaderProps) {
@@ -47,9 +62,30 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 	const [companiesFound, setCompaniesFound] = useState<CompanyFoundData[]>([])
 	const [itemsFound, setItemsFound] = useState<ItemsFoundData[]>([])
 	const [searchLoading, setSearchLoading] = useState(false)
+	const [viewItem, setViewItem] = useState<ItemData | null>(null)
+	const [companyItem, setCompanyItem] = useState<{
+		id: string
+		email: string
+		phone: string
+	} | null>(null)
 
 	const router = useRouter()
 	const urlPathname = router.pathname
+
+	async function handleSendClaimMessage(e: FormEvent, claimMessage: string) {
+		e.preventDefault()
+
+		if (!claimMessage) {
+			toast.error("Escreva uma mensagem para resgatar o item")
+		}
+
+		const res = await api.post("/api/send-claim-message", {
+			toId: companyItem?.id,
+			content: claimMessage,
+		})
+
+		router.push("/chat")
+	}
 
 	useEffect(() => {
 		setCompaniesFound([])
@@ -138,7 +174,7 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 				</div>
 			</header>
 
-			{showSearch && (
+			{showSearch && !viewItem && (
 				<div
 					className="fixed top-0 left-0 z-40 flex h-screen w-full justify-center gap-x-8 bg-black bg-opacity-70 backdrop-blur-[2px] md:items-center md:p-4"
 					onClick={() => {
@@ -307,6 +343,14 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 															local={item.local}
 															title={item.name}
 															className="md:w-72"
+															onClick={() => {
+																setViewItem(
+																	item
+																)
+																setCompanyItem(
+																	item.company
+																)
+															}}
 														/>
 													)
 												)}
@@ -328,6 +372,19 @@ export default function Header({ showInput = true, className }: HeaderProps) {
 						</div>
 					</main>
 				</div>
+			)}
+
+			{viewItem && (
+				<ClaimItemModal
+					item={viewItem}
+					onClose={() => {
+						setViewItem(null)
+					}}
+					onSendClaimMessage={handleSendClaimMessage}
+					canEdit={false}
+					companyEmail={companyItem!.email}
+					companyPhone={companyItem!.phone}
+				/>
 			)}
 		</>
 	)
