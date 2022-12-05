@@ -41,6 +41,13 @@ const handler: NextApiHandler = async (req, res) => {
 						image_url: true,
 					},
 				},
+				company: {
+					select: {
+						id: true,
+						email: true,
+						phone: true,
+					},
+				},
 			},
 		})
 
