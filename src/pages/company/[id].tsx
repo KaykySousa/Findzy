@@ -198,7 +198,7 @@ export default function MainCompany({
 							</p>
 							<TextArea
 								className="mb-4"
-								placeholder="Oi, eu estive aí ontem as 13h e acabei esquecendo meu carregador debaixo da mesa!"
+								placeholder="Ex.: Oi, eu estive aí ontem às 13h e acabei esquecendo meu carregador debaixo da mesa!"
 								value={claimMessage}
 								onChange={(e) => {
 									setClaimMessage(e.target.value)
