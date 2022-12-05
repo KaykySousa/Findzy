@@ -48,6 +48,9 @@ export default function MainUser({ companies }: MainUserProps) {
 
 export const getServerSideProps = withAuth(["user"], async ({ data }) => {
 	const companies = await prisma.company.findMany({
+		where: {
+			status: "valid",
+		},
 		select: {
 			id: true,
 			name: true,
