@@ -134,6 +134,13 @@ export default function Login() {
 					>
 						Ainda não possui uma conta? Cadastre-se
 					</LinkButton>
+					<LinkButton
+						href="/register/company"
+						className="lg:hidden"
+						theme="secondary"
+					>
+						É responsável por um estabelecimento?
+					</LinkButton>
 				</div>
 			</div>
 		</div>
